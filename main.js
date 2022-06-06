@@ -1,5 +1,6 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow} = require('electron')
+const windowManager = require('electron-window-manager');
 const path = require('path')
 
 function createWindow () {
@@ -23,12 +24,37 @@ function createWindow () {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  createWindow()
+  app.allowRendererProcessReuse = false;
+  // createWindow()
+
+
+  windowManager.init({
+    'onLoadFailure': function(window){
+        console.log('Cannot load the requested page!');
+    }
+  });
+
+  windowManager.sharedData.set("cup887", {"x": 0, "y":0})
+  windowManager.sharedData.set("cup887", {"x": 0, "y":0})
+
+  var win = windowManager.createNew("Main", "Tabletop", "file://" + __dirname + "/index.html",
+  false, {
+    'width': 1400,
+    'height': 800,
+    resizable: true,
+    'webPreferences': {
+        nodeIntegration: true,
+        contextIsolation: false,
+        enableRemoteModule: true,
+        preload:path.join(__dirname, 'preload.js')
+    }
+  });
+  win.open();
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    if (BrowserWindow.getAllWindows().length === 0) win.open();
   })
 })
 
