@@ -4,11 +4,13 @@
 // `nodeIntegration` is turned off. Use `preload.js` to
 // selectively enable features needed in the rendering
 // process.
+
+var mediaID = "00a8dc9d6669a9e44bbffe325f9acd5e94b9fa817b083e7e2cd5928b128f4f03"
 var electron = require('electron');
 
-var AR = require("./src/aruco").AR;
-var MP = require("./modules/pointmath").MP;
-var VI = require("./modules/vision").VI;
+var AR = require("../src/aruco").AR;
+var MP = require("../modules/pointmath").MP;
+var VI = require("../modules/vision").VI;
 const remote = require('electron').remote
 const windowManager = remote.require('electron-window-manager');
 var des = [0, 0, 1250, 0, 1250, 700, 0, 700];
@@ -68,7 +70,7 @@ function startRecording() {
       video: {
           mandatory: {
               // label: "HD Webcam C615 (046d:082c)"
-              chromeMediaSourceId: '955183132d42fc09e7fd3f239f3cd3e81ff097f641fa41f1f60dd2c9cb2860b0',
+              chromeMediaSourceId: mediaID,
           }
       }},
   (localMediaStream) => {
@@ -127,15 +129,19 @@ function tick(){
           markers.forEach((marker) => {
             if(MP.in_box(marker.corners, VI.workingbox)){
                 if(marker.id == 887){
-                    let point = VI.getRealPos(VI.workingbox.corners, MP.findcenter(marker.corners), des);
-                    windowManager.sharedData.set("cup887", {x:point.x, y:point.y})
-                    console.log(point);
+                  let point = VI.getRealPos(VI.workingbox.corners, MP.findcenter(marker.corners), des);
+                  windowManager.sharedData.set("cup887", {x:point[0], y:point[1]})
                 }
                 if(marker.id == 502){
-                    // let point = VI.getRealPos(VI.workingbox, MP.findcenter(marker.corners), des);
+                  let point = VI.getRealPos(VI.workingbox.corners, MP.findcenter(marker.corners), des);
+                  windowManager.sharedData.set("cup502", {x:point[0], y:point[1]})
                 }
             }
           })
       }
   }
+}
+
+function showmedia(){
+  console.log(navigator.mediaDevices.enumerateDevices());
 }

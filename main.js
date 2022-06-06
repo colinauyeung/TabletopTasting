@@ -37,7 +37,7 @@ app.whenReady().then(() => {
   windowManager.sharedData.set("cup887", {"x": 0, "y":0})
   windowManager.sharedData.set("cup887", {"x": 0, "y":0})
 
-  var win = windowManager.createNew("Main", "Tabletop", "file://" + __dirname + "/index.html",
+  var win = windowManager.createNew("Main", "Control", "file://" + __dirname + "/control_window/index.html",
   false, {
     'width': 1400,
     'height': 800,
@@ -50,6 +50,20 @@ app.whenReady().then(() => {
     }
   });
   win.open();
+
+  var win2 = windowManager.createNew("Tabletop", "Tabletop", "file://" + __dirname + "/tablewindow/index.html",
+  false, {
+    'width': 1400,
+    'height': 800,
+    resizable: true,
+    'webPreferences': {
+        nodeIntegration: true,
+        contextIsolation: false,
+        enableRemoteModule: true,
+        preload:path.join(__dirname, 'preload.js')
+    }
+  });
+  win2.open();
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
