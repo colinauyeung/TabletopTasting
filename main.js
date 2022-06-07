@@ -5,6 +5,7 @@ const tmi = require('tmi.js');
 const {app, BrowserWindow} = require('electron')
 const windowManager = require('electron-window-manager');
 const path = require('path')
+var flip = true;
 
 function createWindow () {
   // Create the browser window.
@@ -95,6 +96,16 @@ app.whenReady().then(() => {
   client.on('message', (channel, tags, message, self) => {
     // Ignore echoed messages.
     if(self) return;
+    //Code if I want to run it on a random chat
+    // if(flip){
+    //   windowManager.sharedData.set("chat887", {name:tags.username, message:message});
+    //   flip = !flip
+    // }
+    // else{
+    //   windowManager.sharedData.set("chat502", {name:tags.username, message:message});
+    //   flip = !flip
+    // }
+
     let bits = message.split(" ");
     if(bits.length > 0){
       if(bits[0].toLowerCase() === '!a') {

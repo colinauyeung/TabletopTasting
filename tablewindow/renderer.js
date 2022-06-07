@@ -7,12 +7,16 @@ function setTranslate(xPos, yPos, el) {
 
 windowManager.sharedData.watch("cup887", function(prop, action, newValue, oldValue){
     var cup = document.getElementById("cup887")
-    setTranslate(newValue.x, newValue.y, cup);
+    let x = newValue.x - 25;
+    let y = newValue.y - 25;
+    setTranslate(x, y, cup);
 })
 
 windowManager.sharedData.watch("cup502", function(prop, action, newValue, oldValue){
     var cup = document.getElementById("cup502")
-    setTranslate(newValue.x, newValue.y, cup);
+    let x = newValue.x - 25;
+    let y = newValue.y - 25 - (50*1);
+    setTranslate(x, y, cup);
 })
 
 windowManager.sharedData.watch("chat887", function(prop, action, newValue, oldValue){
@@ -24,7 +28,7 @@ windowManager.sharedData.watch("chat887", function(prop, action, newValue, oldVa
     s1.innerHTML = newValue.name;
     let s2 = document.createElement("span");
     s2.className = "messagetext";
-    s2.innerHTML = newValue.message;
+    s2.innerHTML = ": " + newValue.message;
     kid.appendChild(s1);
     kid.appendChild(s2);
     text.appendChild(kid);
@@ -42,7 +46,7 @@ windowManager.sharedData.watch("chat502", function(prop, action, newValue, oldVa
     s1.innerHTML = newValue.name;
     let s2 = document.createElement("span");
     s2.className = "messagetext";
-    s2.innerHTML = newValue.message;
+    s2.innerHTML = ": " + newValue.message;
     kid.appendChild(s1);
     kid.appendChild(s2);
     text.appendChild(kid);

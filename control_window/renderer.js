@@ -5,7 +5,7 @@
 // selectively enable features needed in the rendering
 // process.
 
-var mediaID = "00a8dc9d6669a9e44bbffe325f9acd5e94b9fa817b083e7e2cd5928b128f4f03"
+var mediaID = "47d79ebab9517b8f27c35fef1bf86db0e8e28cf8d19c47dc5393cd4d43dc5f40"
 var electron = require('electron');
 
 var AR = require("../src/aruco").AR;
