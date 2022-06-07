@@ -107,14 +107,14 @@ app.whenReady().then(() => {
     // }
 
     let bits = message.split(" ");
-    if(bits.length > 0){
+    if(bits.length > 1){
       if(bits[0].toLowerCase() === '!a') {
-        windowManager.sharedData.set("chat887", {name:tags.username, message:message});
+        windowManager.sharedData.set("chat887", {name:tags.username, message:bits[1]});
         // client.say(channel, `@${tags.username}, Yo what's up`);
   
       }
       if(bits[0].toLowerCase() === "!b"){
-        windowManager.sharedData.set("chat502", {name:tags.username, message:message});
+        windowManager.sharedData.set("chat502", {name:tags.username, message:bits[1]});
       }
     }
   });
