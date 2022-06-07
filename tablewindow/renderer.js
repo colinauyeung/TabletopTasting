@@ -14,3 +14,39 @@ windowManager.sharedData.watch("cup502", function(prop, action, newValue, oldVal
     var cup = document.getElementById("cup502")
     setTranslate(newValue.x, newValue.y, cup);
 })
+
+windowManager.sharedData.watch("chat887", function(prop, action, newValue, oldValue){
+    console.log(newValue)
+    let text = document.getElementById("text887")
+    let kid = document.createElement("div");
+    let s1 = document.createElement("span");
+    s1.className = "username";
+    s1.innerHTML = newValue.name;
+    let s2 = document.createElement("span");
+    s2.className = "messagetext";
+    s2.innerHTML = newValue.message;
+    kid.appendChild(s1);
+    kid.appendChild(s2);
+    text.appendChild(kid);
+    if(text.childNodes.length > 5){
+        text.removeChild(text.firstChild);
+    }
+})
+
+windowManager.sharedData.watch("chat502", function(prop, action, newValue, oldValue){
+    console.log(newValue)
+    let text = document.getElementById("text502")
+    let kid = document.createElement("div");
+    let s1 = document.createElement("span");
+    s1.className = "username";
+    s1.innerHTML = newValue.name;
+    let s2 = document.createElement("span");
+    s2.className = "messagetext";
+    s2.innerHTML = newValue.message;
+    kid.appendChild(s1);
+    kid.appendChild(s2);
+    text.appendChild(kid);
+    if(text.childNodes.length > 5){
+        text.removeChild(text.firstChild);
+    }
+})
