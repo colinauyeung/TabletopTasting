@@ -1,6 +1,11 @@
+
+
 const remote = require('electron').remote
 const windowManager = remote.require('electron-window-manager');
 const linkPreviewGenerator = require("link-preview-generator");
+
+
+
 
 function setTranslate(xPos, yPos, el) {
     el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
