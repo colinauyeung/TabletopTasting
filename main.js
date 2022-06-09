@@ -38,8 +38,8 @@ app.whenReady().then(() => {
     }
   });
 
-  windowManager.sharedData.set("cup887", {"x": 0, "y":0})
-  windowManager.sharedData.set("cup887", {"x": 0, "y":0})
+  windowManager.sharedData.set("cup887", {"x": 0, "y":0, refx:0, refy:0})
+  windowManager.sharedData.set("cup502", {"x": 0, "y":0, refx:0, refy:0})
   windowManager.sharedData.set("chat887", {name:"blah", message:"blah"});
   windowManager.sharedData.set("chat502", {name:"blah", message:"blah"});
 
