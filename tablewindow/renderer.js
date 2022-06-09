@@ -1,5 +1,4 @@
 require('dotenv').config()
-console.log(process.env.OAUTH); 
 
 const remote = require('electron').remote
 const windowManager = remote.require('electron-window-manager');
