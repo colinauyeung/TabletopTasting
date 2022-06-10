@@ -84,7 +84,7 @@ windowManager.sharedData.watch("cup887", function(prop, action, newValue, oldVal
     let x = newValue.x - 25;
     let y = newValue.y - 25;
     let time = Date.now();
-    if(time > timestamp + 5000){
+    if(time > timestamp + 1000){
         timestamp = time;
         writeTodb(887, newValue.refx, newValue.refy);
     }
@@ -97,7 +97,7 @@ windowManager.sharedData.watch("cup502", function(prop, action, newValue, oldVal
     let x = newValue.x - 25;
     let y = newValue.y - 25 - (50*1);
     let time = Date.now();
-    if(time > timestamp2 + 5000){
+    if(time > timestamp2 + 1000){
         timestamp2 = time;
         writeTodb(502, newValue.refx, newValue.refy);
     }
@@ -111,9 +111,9 @@ windowManager.sharedData.watch("chat887", function(prop, action, newValue, oldVa
     .then(function(preview){
         if(preview != null){
             let text = document.getElementById("text887")
-            text.appendChild(preview);
+            text.insertBefore(preview, text.firstChild);
             if(text.childNodes.length > 5){
-                text.removeChild(text.firstChild);
+                text.removeChild(text.lastChild);
             }
         }
     });
@@ -128,9 +128,9 @@ windowManager.sharedData.watch("chat502", function(prop, action, newValue, oldVa
     .then(function(preview){
         if(preview != null){
             let text = document.getElementById("text502")
-            text.appendChild(preview);
+            text.insertBefore(preview, text.firstChild);
             if(text.childNodes.length > 5){
-                text.removeChild(text.firstChild);
+                text.removeChild(text.lastChild);
             }
         }
     });
