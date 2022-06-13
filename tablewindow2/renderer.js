@@ -7,7 +7,60 @@ const { initializeApp } = require('firebase/app');
 const { getDatabase, ref, set, update } = require("firebase/database");
 const { write } = require('original-fs');
 
+const emotes = ['MechaRobot', 'ImTyping', 'Shush', 'MyAvatar', 
+'PizzaTime', 'LaundryBasket', 'ModLove', 'PotFriend', 'Jebasted', 
+'PogBones', 'PoroSad', 'KEKHeim', 'CaitlynS', 'HarleyWink', 'WhySoSerious', 
+'DarkKnight', 'FamilyMan', 'RyuChamp', 'HungryPaimon', 'TransgenderPride',
+'PansexualPride', 'NonbinaryPride', 'LesbianPride', 'IntersexPride', 'GenderFluidPride', 
+'GayPride', 'BisexualPride', 'AsexualPride', 'NewRecord', 'PogChamp', 'GlitchNRG', 
+'GlitchLit', 'StinkyGlitch', 'GlitchCat', 'FootGoal', 'FootYellow', 'FootBall', 
+'BlackLivesMatter', 'ExtraLife', 'VirtualHug', 'R-)', 'R)', ';-p', ';p', ';-P', 
+';P', ':-p', ':p', ':-P', ':P', ';-)', ';)', ':-1', ':1', ':-2', ':2', '<3', ':-o', 
+':o', ':-O', ':O', '8-)', 'B-)', 'B)', 'o.o', 'o_o', 'o.O', 'o_O', 'O.O', 'O_O', 
+'O.o', 'O_o', ':-Z', ':Z', ':-z', ':z', ':-|', ':|', '>(', ':-D', ':D', ':-(', 
+':(', ':-)', 'BOP', 'SingsNote', 'SingsMic', 'TwitchSings', 'SoonerLater', 'HolidayTree',
+'HolidaySanta', 'HolidayPresent', 'HolidayLog', 'HolidayCookie', 'GunRun', 'PixelBob', 
+'FBPenalty', 'FBChallenge', 'FBCatch', 'FBBlock', 'FBSpiral', 'FBPass', 'FBRun', 'MaxLOL',
+'TwitchRPG', 'PinkMercy', 'MercyWing2', 'MercyWing1', 'PartyHat', 'EarthDay', 'TombRaid',
+'PopCorn', 'FBtouchdown', 'TPFufun', 'TwitchVotes', 'DarkMode', 'HSWP', 'HSCheers',
+'PowerUpL', 'PowerUpR', 'LUL', 'EntropyWins', 'TPcrunchyroll', 'TwitchUnity', 'Squid4', 
+'Squid3', 'Squid2', 'Squid1', 'CrreamAwk', 'CarlSmile', 'TwitchLit', 'TehePelo',
+'TearGlove', 'SabaPing', 'PunOko', 'KonCha', 'Kappu', 'InuyoFace', 'BigPhish', 
+'BegWan', 'ThankEgg', 'MorphinTime', 'TheIlluminati', 'TBAngel', 'MVGame', 
+'NinjaGrumpy', 'PartyTime', 'RlyTho', 'UWot', 'YouDontSay', 'KAPOW', 'ItsBoshyTime', 
+'CoolStoryBob', 'TriHard', 'SuperVinlin', 'FreakinStinkin', 'Poooound', 'CurseLit', 
+'BatChest', 'BrainSlug', 'PrimeMe', 'StrawBeary', 'RaccAttack', 'UncleNox', 'WTRuck', 
+'TooSpicy', 'Jebaited', 'DogFace', 'BlargNaut', 'TakeNRG', 'GivePLZ', 'imGlitch', 
+'pastaThat', 'copyThis', 'UnSane', 'DatSheffy', 'TheTarFu', 'PicoMause', 'TinyFace', 'DxCat',
+'RuleFive', 'VoteNay', 'VoteYea', 'PJSugar', 'DoritosChip', 'OpieOP', 'FutureMan', 
+'ChefFrank', 'StinkyCheese', 'NomNom', 'SmoocherZ', 'cmonBruh', 'KappaWealth', 'MikeHogu',
+'VoHiYo', 'KomodoHype', 'SeriousSloth', 'OSFrog', 'OhMyDog', 'KappaClaus', 'KappaRoss',
+'MingLee', 'SeemsGood', 'twitchRaid', 'bleedPurple', 'duDudu', 'riPepperonis', 'NotLikeThis',
+'DendiFace', 'CoolCat', 'KappaPride', 'ShadyLulu', 'ArgieB8', 'CorgiDerp', 'PraiseIt',
+'TTours', 'mcaT', 'NotATK', 'HeyGuys', 'Mau5', 'PRChase', 'WutFace', 'BuddhaBar',
+'PermaSmug', 'panicBasket', 'BabyRage', 'HassaanChop', 'TheThing', 'EleGiggle',
+'RitzMitz', 'YouWHY', 'PipeHype', 'BrokeBack', 'ANELE', 'PanicVis', 'GrammarKing',
+'PeoplesChamp', 'SoBayed', 'BigBrother', 'Keepo', 'Kippa', 'RalpherZ', 'TF2John', 'ThunBeast',
+'WholeWheat', 'DAESuppy', 'FailFish', 'HotPokket', '4Head', 'ResidentSleeper', 'FUNgineer',
+'PMSTwin', 'ShazBotstix', 'BibleThump', 'AsianGlow', 'DBstyle', 'BloodTrail', 'OneHand',
+'FrankerZ', 'SMOrc', 'ArsonNoSexy', 'PunchTrees', 'SSSsss', 'Kreygasm', 'KevinTurtle',
+'PJSalt', 'SwiftRage', 'DansGame', 'GingerPower', 'BCWarrior', 'MrDestructoid',
+'JonCarnage', 'Kappa', 'RedCoat', 'TheRinger', 'StoneLightning', 'OptimizePrime', 'JKanStyle',
+'R)', ';P', ':P', ';)', ':2', '<3', ':O', 'B)', 'O_o', ':|', '>(', ':D', ':(', ':)']
 
+https://stackoverflow.com/questions/6121203/how-to-do-fade-in-and-fade-out-with-javascript-and-css
+function fade(element) {
+    var op = 1;  // initial opacity
+    var timer = setInterval(function () {
+        if (op <= 0.1){
+            clearInterval(timer);
+            element.style.display = 'none';
+        }
+        element.style.opacity = op;
+        element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+        op -= op * 0.05;
+    }, 100);
+}
 
 // Your web app's Firebase configuration
 
@@ -107,31 +160,64 @@ windowManager.sharedData.watch("cup502", function(prop, action, newValue, oldVal
 windowManager.sharedData.watch("chat887", function(prop, action, newValue, oldValue){
     console.log(newValue)
     //broken, need to function async
-    getlinkpreview(newValue.message)
-    .then(function(preview){
-        if(preview != null){
-            let text = document.getElementById("text887")
-            text.insertBefore(preview, text.firstChild);
-            if(text.childNodes.length > 5){
-                text.removeChild(text.lastChild);
-            }
-        }
-    });
-
+    // let kid = document.createElement("div");
+    // let s1 = document.createElement("span");
+    // s1.className = "username";
+    // s1.innerHTML = newValue.name;
+    // let s2 = document.createElement("span");
+    // s2.className = "messagetext";
+    // s2.innerHTML = ": " + newValue.message;
+    // kid.appendChild(s1);
+    // kid.appendChild(s2);
+    // text.appendChild(kid);
+    // if(text.childNodes.length > 5){
+    //     text.removeChild(text.firstChild);
+    // }
+    // let el = floating({
+    //     content:newValue.message,
+    //     number:1,
+    //     duration: 3,
+    //     repeat: 1,
+    //     size: 1
+    // })
+    let cup = document.getElementById("test887")
+    cup.appendChild(el);
+    let img = document.createElement("img");
+    img.src = "../twitchemotes/BOP.jpg";
+    cup.appendChild(img);
 
 })
 
 windowManager.sharedData.watch("chat502", function(prop, action, newValue, oldValue){
     console.log(newValue)
-    //broken, need to function async
-    getlinkpreview(newValue.message)
-    .then(function(preview){
-        if(preview != null){
-            let text = document.getElementById("text502")
-            text.insertBefore(preview, text.firstChild);
-            if(text.childNodes.length > 5){
-                text.removeChild(text.lastChild);
-            }
-        }
-    });
+    // let text = document.getElementById("text502")
+    // let kid = document.createElement("div");
+    // let s1 = document.createElement("span");
+    // s1.className = "username";
+    // s1.innerHTML = newValue.name;
+    // let s2 = document.createElement("span");
+    // s2.className = "messagetext";
+    // s2.innerHTML = ": " + newValue.message;
+    // kid.appendChild(s1);
+    // kid.appendChild(s2);
+    // text.appendChild(kid);
+    // if(text.childNodes.length > 5){
+    //     text.removeChild(text.firstChild);
+    // }
+    // let el = floating({
+    //     content:newValue.message,
+    //     number:1,
+    //     duration: 20,
+    //     repeat: 1,
+    //     size: 1
+    // })
+    if(emotes.includes(newValue.message)){
+        let cup = document.getElementById("text502")
+        // cup.appendChild(el);
+        let img = document.createElement("img");
+        img.src = `../twitchemotes/${newValue.message}.jpg`;
+        fade(img)
+        cup.appendChild(img);
+    }
+
 })
