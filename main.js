@@ -59,8 +59,8 @@ app.whenReady().then(() => {
 
   var win2 = windowManager.createNew("Tabletop", "Tabletop", "file://" + __dirname + "/tablewindow/index.html",
   false, {
-    'width': 1400,
-    'height': 800,
+    'width': 1280,
+    'height': 720,
     resizable: true,
     'webPreferences': {
         nodeIntegration: true,
@@ -70,6 +70,20 @@ app.whenReady().then(() => {
     }
   });
   win2.open();
+
+  var win3 = windowManager.createNew("Tabletop2", "Tabletop", "file://" + __dirname + "/tablewindow2/index.html",
+  false, {
+    'width': 1280,
+    'height': 720,
+    resizable: true,
+    'webPreferences': {
+        nodeIntegration: true,
+        contextIsolation: false,
+        enableRemoteModule: true,
+        preload:path.join(__dirname, 'preload.js')
+    }
+  });
+  win3.open();
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
