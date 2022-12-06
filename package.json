@@ -20,7 +20,7 @@
     "electron": "^13.6.9"
   },
   "dependencies": {
-    "@electron/remote": "^2.0.8",
+    "@electron/remote": "^2.0.9",
     "dotenv": "^16.0.1",
     "electron-window-manager": "^1.0.6",
     "perspective-transform": "^1.1.3",
