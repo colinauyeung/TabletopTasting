@@ -48,7 +48,7 @@ const emotes = ['MechaRobot', 'ImTyping', 'Shush', 'MyAvatar',
 'JonCarnage', 'Kappa', 'RedCoat', 'TheRinger', 'StoneLightning', 'OptimizePrime', 'JKanStyle',
 'R)', ';P', ':P', ';)', ':2', '<3', ':O', 'B)', 'O_o', ':|', '>(', ':D', ':(', ':)']
 
-https://stackoverflow.com/questions/6121203/how-to-do-fade-in-and-fade-out-with-javascript-and-css
+//https://stackoverflow.com/questions/6121203/how-to-do-fade-in-and-fade-out-with-javascript-and-css
 function fade(element) {
     var op = 1;  // initial opacity
     var timer = setInterval(function () {
@@ -59,7 +59,7 @@ function fade(element) {
         element.style.opacity = op;
         element.style.filter = 'alpha(opacity=' + op * 100 + ")";
         op -= op * 0.05;
-    }, 100);
+    }, 200);
 }
 
 // Your web app's Firebase configuration
@@ -180,11 +180,14 @@ windowManager.sharedData.watch("chat887", function(prop, action, newValue, oldVa
     //     repeat: 1,
     //     size: 1
     // })
-    let cup = document.getElementById("test887")
-    cup.appendChild(el);
-    let img = document.createElement("img");
-    img.src = "../twitchemotes/BOP.jpg";
-    cup.appendChild(img);
+    if(emotes.includes(newValue.message)){
+        let cup = document.getElementById("text887")
+        // cup.appendChild(el);
+        let img = document.createElement("img");
+        img.src = `../twitchemotes/${newValue.message}.jpg`;
+        fade(img)
+        cup.appendChild(img);
+    }
 
 })
 

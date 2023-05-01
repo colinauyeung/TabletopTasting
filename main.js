@@ -69,7 +69,9 @@ app.whenReady().then(() => {
         preload:path.join(__dirname, 'preload.js')
     }
   });
+  
   win2.open();
+  win2.object.setAlwaysOnTop(true, level="status");
 
   var win3 = windowManager.createNew("Tabletop2", "Tabletop", "file://" + __dirname + "/tablewindow2/index.html",
   false, {
@@ -83,7 +85,9 @@ app.whenReady().then(() => {
         preload:path.join(__dirname, 'preload.js')
     }
   });
+  
   win3.open();
+  win3.object.setAlwaysOnTop(true, level="status");
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
