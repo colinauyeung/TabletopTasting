@@ -3,9 +3,6 @@ require('dotenv').config()
 const remote = require('electron').remote
 const windowManager = remote.require('electron-window-manager');
 const linkPreviewGenerator = require("link-preview-generator");
-const { initializeApp } = require('firebase/app');
-const { getDatabase, ref, set, update } = require("firebase/database");
-const { write } = require('original-fs');
 
 const emotes = ['MechaRobot', 'ImTyping', 'Shush', 'MyAvatar', 
 'PizzaTime', 'LaundryBasket', 'ModLove', 'PotFriend', 'Jebasted', 
@@ -62,38 +59,8 @@ function fade(element) {
     }, 200);
 }
 
-// Your web app's Firebase configuration
-
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-
-const firebaseConfig = {
-
-    apiKey: process.env.firebaseapikey,
-    authDomain: "tabletop-tasting.firebaseapp.com",
-    projectId: "tabletop-tasting",
-    storageBucket: "tabletop-tasting.appspot.com",
-    messagingSenderId: process.env.firebasesenderid,
-    appId: process.env.firebaseappid,
-    measurementId: process.env.firebasemeasurementid
-};
-  
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
-// Get a reference to the database service
-const database = getDatabase(app);
 
 const cups = [502, 887];
-
-function writeTodb(cup, x, y){
-    const db = getDatabase(app);
-    if(cups.includes(cup)){
-        var updates = {};
-        updates["position/cup" + cup.toString() + "/x"] = x;
-        updates["position/cup" + cup.toString() + "/y"] = y;
-        return update(ref(db), updates);
-    }
-}
 
 function setTranslate(xPos, yPos, el) {
     el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
@@ -139,7 +106,6 @@ windowManager.sharedData.watch("cup887", function(prop, action, newValue, oldVal
     let time = Date.now();
     if(time > timestamp + 1000){
         timestamp = time;
-        // writeTodb(887, newValue.refx, newValue.refy);
     }
     setTranslate(x, y, cup);
 })
@@ -152,34 +118,12 @@ windowManager.sharedData.watch("cup502", function(prop, action, newValue, oldVal
     let time = Date.now();
     if(time > timestamp2 + 1000){
         timestamp2 = time;
-        // writeTodb(502, newValue.refx, newValue.refy);
     }
     setTranslate(x, y, cup);
 })
 
 windowManager.sharedData.watch("chat887", function(prop, action, newValue, oldValue){
     console.log(newValue)
-    //broken, need to function async
-    // let kid = document.createElement("div");
-    // let s1 = document.createElement("span");
-    // s1.className = "username";
-    // s1.innerHTML = newValue.name;
-    // let s2 = document.createElement("span");
-    // s2.className = "messagetext";
-    // s2.innerHTML = ": " + newValue.message;
-    // kid.appendChild(s1);
-    // kid.appendChild(s2);
-    // text.appendChild(kid);
-    // if(text.childNodes.length > 5){
-    //     text.removeChild(text.firstChild);
-    // }
-    // let el = floating({
-    //     content:newValue.message,
-    //     number:1,
-    //     duration: 3,
-    //     repeat: 1,
-    //     size: 1
-    // })
     if(emotes.includes(newValue.message)){
         let cup = document.getElementById("text887")
         // cup.appendChild(el);
@@ -193,27 +137,6 @@ windowManager.sharedData.watch("chat887", function(prop, action, newValue, oldVa
 
 windowManager.sharedData.watch("chat502", function(prop, action, newValue, oldValue){
     console.log(newValue)
-    // let text = document.getElementById("text502")
-    // let kid = document.createElement("div");
-    // let s1 = document.createElement("span");
-    // s1.className = "username";
-    // s1.innerHTML = newValue.name;
-    // let s2 = document.createElement("span");
-    // s2.className = "messagetext";
-    // s2.innerHTML = ": " + newValue.message;
-    // kid.appendChild(s1);
-    // kid.appendChild(s2);
-    // text.appendChild(kid);
-    // if(text.childNodes.length > 5){
-    //     text.removeChild(text.firstChild);
-    // }
-    // let el = floating({
-    //     content:newValue.message,
-    //     number:1,
-    //     duration: 20,
-    //     repeat: 1,
-    //     size: 1
-    // })
     if(emotes.includes(newValue.message)){
         let cup = document.getElementById("text502")
         // cup.appendChild(el);

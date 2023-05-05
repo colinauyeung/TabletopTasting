@@ -73,3 +73,7 @@ Foreground html elements (currently link previews)
 Background html elements (currently emotes)
     tablewindow2/renderer/js
 
+If you want to attach things to the tracked objects at the moment, just append your html element to "text502" and "text887"
+
+**Warning**
+Github will yell at you to update Electron. DON'T THE MULITY WINDOW SUPPORT RELIES ON AN OLDER VERSION OF ELECTRON
