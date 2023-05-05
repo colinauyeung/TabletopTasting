@@ -13,6 +13,8 @@ var MP = require("../modules/pointmath").MP;
 var VI = require("../modules/vision").VI;
 const remote = require('electron').remote
 const windowManager = remote.require('electron-window-manager');
+
+
 var des = [0, 0, 1250, 0, 1250, 700, 0, 700];
 
 var vidstream;
@@ -20,7 +22,9 @@ var canvas, context, detector;
 var firstfind;
 
 var recording = false;
-    function toggleRecording(){
+
+//This is the function is the one hooks in the button on the recording window that says "record". This starts the webcam and sets up tracking or stops the webcam and tracking. 
+function toggleRecording(){
     if(recording){
         recording = false;
         document.getElementById("recording").innerHTML = "Record"
@@ -112,18 +116,14 @@ function tick(){
 
       if(!firstfind){
           if(VI.allcornersfound()){
-              // console.log(boundingmarkers);
               firstfind = true;
           }
       }
       if(VI.allcornersfound()){
           VI.findmainbox();
-          // VI.findinterbox();
           VI.drawId(context, markers);
           if(firstfind){
-              // console.log(VI.interactionbox);
               markers.push(VI.workingbox);
-              // markers.push(VI.interactionbox);
           }
           VI.drawCorners(context, markers); 
           markers.forEach((marker) => {
