@@ -10,12 +10,12 @@ function setTranslate(xPos, yPos, el) {
     el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
 }
 
-async function getlinkpreview(link){
+async function getlinkpreview(link) {
     let bits = link.split(":");
-    if(bits.length < 1){
+    if (bits.length < 1) {
         return null;
     }
-    if(bits[0] === "http" || bits[0] == "https"){
+    if (bits[0] === "http" || bits[0] == "https") {
         const previewData = await linkPreviewGenerator(link);
         var box = document.createElement("div");
         box.className = "previewbox";
@@ -38,62 +38,57 @@ async function getlinkpreview(link){
         return box;
     }
     return null;
-    
+
 
 }
 
 var timestamp = 0;
-windowManager.sharedData.watch("cup887", function(prop, action, newValue, oldValue){
+windowManager.sharedData.watch("cup887", function (prop, action, newValue, oldValue) {
     var cup = document.getElementById("cup887")
     let x = newValue.refx - 25;
     let y = newValue.refy - 25;
     let time = Date.now();
-    if(time > timestamp + 1000){
+    if (time > timestamp + 1000) {
         timestamp = time;
     }
     setTranslate(x, y, cup);
 })
 
 var timestamp2 = 0;
-windowManager.sharedData.watch("cup502", function(prop, action, newValue, oldValue){
+windowManager.sharedData.watch("cup502", function (prop, action, newValue, oldValue) {
     var cup = document.getElementById("cup502")
     let x = newValue.refx - 25;
-    let y = newValue.refy - 25 - (50*1);
+    let y = newValue.refy - 25 - (50 * 1);
     let time = Date.now();
-    if(time > timestamp2 + 1000){
+    if (time > timestamp2 + 1000) {
         timestamp2 = time;
     }
     setTranslate(x, y, cup);
 })
 
-windowManager.sharedData.watch("chat887", function(prop, action, newValue, oldValue){
+windowManager.sharedData.watch("chat887", function (prop, action, newValue, oldValue) {
     console.log(newValue)
-    //broken, need to function async
-    getlinkpreview(newValue.message)
-    .then(function(preview){
-        if(preview != null){
-            let text = document.getElementById("text887")
-            text.insertBefore(preview, text.firstChild);
-            if(text.childNodes.length > 5){
-                text.removeChild(text.lastChild);
-            }
-        }
-    });
+    let text = document.getElementById("chat887")
+    // text.append(newValue.name + ": " + newValue.message)
+    const child = document.createElement('p');
+    child.append(newValue.name + ": " + newValue.message)
+    text.appendChild(child);
 
-
+    console.log("nodes:" + text.childNodes.length)
+    if (text.childNodes.length > 5) {
+        text.removeChild(text.firstChild);
+    }
 })
 
-windowManager.sharedData.watch("chat502", function(prop, action, newValue, oldValue){
+windowManager.sharedData.watch("chat502", function (prop, action, newValue, oldValue) {
     console.log(newValue)
-    //broken, need to function async
-    getlinkpreview(newValue.message)
-    .then(function(preview){
-        if(preview != null){
-            let text = document.getElementById("text502")
-            text.insertBefore(preview, text.firstChild);
-            if(text.childNodes.length > 5){
-                text.removeChild(text.lastChild);
-            }
-        }
-    });
+    let text = document.getElementById("chat502")
+    // text.append(newValue.name + ": " + newValue.message)
+    const child = document.createElement('p');
+    child.append(newValue.name + ": " + newValue.message)
+    text.appendChild(child);
+
+    if (text.childNodes.length > 5) {
+        text.removeChild(text.firstChild);
+    }
 })

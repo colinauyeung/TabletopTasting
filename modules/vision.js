@@ -30,33 +30,33 @@ VI.workingbox = {
 // }
 
 
-VI.allcornersfound = function(){
-    if(
+VI.allcornersfound = function () {
+    if (
         // VI.boundingmarkers.topright === null ||
         VI.boundingmarkers.bottomleft === null ||
         VI.boundingmarkers.bottommid === null ||
         // VI.boundingmarkers.bottomright === null ||
         VI.boundingmarkers.topleft === null ||
         VI.boundingmarkers.topmid === null
-    ){
+    ) {
         return false;
     }
     return true;
 }
 
-VI.findcorners = function (markers){
+VI.findcorners = function (markers) {
     markers.forEach((marker) => {
         switch (marker.id) {
-            case 816:
+            case 51:
                 VI.boundingmarkers.topleft = marker;
                 break;
-            case 603:
+            case 195:
                 VI.boundingmarkers.bottomleft = marker;
                 break;
-            case 912:
+            case 131:
                 VI.boundingmarkers.topmid = marker;
                 break;
-            case 722:
+            case 231:
                 VI.boundingmarkers.bottommid = marker;
                 break;
             // case 4:
@@ -69,8 +69,8 @@ VI.findcorners = function (markers){
     })
 }
 
-VI.findmainbox = function() {
-    if(VI.allcornersfound()){
+VI.findmainbox = function () {
+    if (VI.allcornersfound()) {
         VI.workingbox.corners[0] = MP.findcenter(VI.boundingmarkers.topleft.corners);
         VI.workingbox.corners[1] = MP.findcenter(VI.boundingmarkers.topmid.corners);
         VI.workingbox.corners[2] = MP.findcenter(VI.boundingmarkers.bottommid.corners);
@@ -88,23 +88,23 @@ VI.findmainbox = function() {
 // }
 
 
-VI.snapshot= function (context){
+VI.snapshot = function (context) {
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
     VI.imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 }
 
-VI.drawCorners = function (context, markers){
+VI.drawCorners = function (context, markers) {
     var corners, corner, i, j;
 
     context.lineWidth = 3;
 
-    for (i = 0; i !== markers.length; ++ i){
+    for (i = 0; i !== markers.length; ++i) {
         corners = markers[i].corners;
 
         context.strokeStyle = "red";
         context.beginPath();
 
-        for (j = 0; j !== corners.length; ++ j){
+        for (j = 0; j !== corners.length; ++j) {
             corner = corners[j];
             context.moveTo(corner.x, corner.y);
             corner = corners[(j + 1) % corners.length];
@@ -118,7 +118,7 @@ VI.drawCorners = function (context, markers){
         context.strokeRect(corners[0].x - 2, corners[0].y - 2, 4, 4);
     }
 }
-VI.drawline = function(context, p1, p2){
+VI.drawline = function (context, p1, p2) {
     context.strokeStyle = "blue";
     context.beginPath();
 
@@ -129,19 +129,19 @@ VI.drawline = function(context, p1, p2){
     context.closePath();
 }
 
-VI.drawId = function (context, markers){
+VI.drawId = function (context, markers) {
     var corners, corner, x, y, i, j;
 
     context.strokeStyle = "blue";
     context.lineWidth = 1;
 
-    for (i = 0; i !== markers.length; ++ i){
+    for (i = 0; i !== markers.length; ++i) {
         corners = markers[i].corners;
 
         x = Infinity;
         y = Infinity;
 
-        for (j = 0; j !== corners.length; ++ j){
+        for (j = 0; j !== corners.length; ++j) {
             corner = corners[j];
 
             x = Math.min(x, corner.x);
@@ -152,10 +152,10 @@ VI.drawId = function (context, markers){
     }
 }
 
-VI.getrotation = function(canvas, unadjusted_corners){
+VI.getrotation = function (canvas, unadjusted_corners) {
     var posit = new POS.Posit(38.1, canvas.width);
     var corners = unadjusted_corners;
-    for (var i = 0; i < corners.length; ++ i){
+    for (var i = 0; i < corners.length; ++i) {
         var corner = corners[i];
 
         corner.x = corner.x - (canvas.width / 2);
@@ -167,15 +167,15 @@ VI.getrotation = function(canvas, unadjusted_corners){
     m.set(pose.bestRotation[0][0], pose.bestRotation[0][1], pose.bestRotation[0][2], 1,
         pose.bestRotation[1][0], pose.bestRotation[1][1], pose.bestRotation[1][2], 1,
         pose.bestRotation[2][0], pose.bestRotation[2][1], pose.bestRotation[2][2], 1,
-        0,0,0,1);
+        0, 0, 0, 1);
     // console.log(pose.bestRotation);
     var e = new THREE.Euler();
     e.setFromRotationMatrix(m);
-    return {x:e.x * (180/Math.PI), y:e.y* (180/Math.PI), z:e.z* (180/Math.PI)};
+    return { x: e.x * (180 / Math.PI), y: e.y * (180 / Math.PI), z: e.z * (180 / Math.PI) };
 
 }
 
-VI.getRealPos = function(corners, point, des){
+VI.getRealPos = function (corners, point, des) {
 
     // var srcCorners = [158, 64, 494, 69, 495, 404, 158, 404];
     // var dstCorners = [100, 500, 152, 564, 148, 604, 100, 560];
@@ -185,10 +185,10 @@ VI.getRealPos = function(corners, point, des){
     // console.log(srcCorners);
     // return dstPt;
     // console.log(corners);
-    var source = [corners[0].x, corners[0].y, 
-        corners[1].x, corners[1].y,
-        corners[2].x, corners[2].y,
-        corners[3].x, corners[3].y];
+    var source = [corners[0].x, corners[0].y,
+    corners[1].x, corners[1].y,
+    corners[2].x, corners[2].y,
+    corners[3].x, corners[3].y];
     // var des = [0, 0, 1250, 0, 1250, 700, 0, 700];
     // console.log(source);
     // console.log(point);

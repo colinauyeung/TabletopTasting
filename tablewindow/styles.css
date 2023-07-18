@@ -11,6 +11,7 @@
 }
 
 .circletext{
+    font-family: sans-serif;
     width: 700px;
     left: 60px;
     position:absolute
@@ -45,4 +46,8 @@
   .previewtext{
     padding: 10px 0px 10px 205px;
     color: white;
+  }
+
+  p {
+    margin: 0px;
   }

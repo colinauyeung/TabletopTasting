@@ -5,7 +5,7 @@
 // selectively enable features needed in the rendering
 // process.
 
-var mediaID = "8f3aa377ae038af6ab0d6757d0c7c4a948e9bb06c07613965a667bd4fbf08993"
+var mediaID = "5bfedf5942f34fec96ebbf7642b8f8b0ffa959a596f15883d9a6eb6906276486"
 var electron = require('electron');
 
 var AR = require("../src/aruco").AR;
@@ -24,17 +24,17 @@ var firstfind;
 var recording = false;
 
 //This is the function is the one hooks in the button on the recording window that says "record". This starts the webcam and sets up tracking or stops the webcam and tracking. 
-function toggleRecording(){
-    if(recording){
-        recording = false;
-        document.getElementById("recording").innerHTML = "Record"
-        // window.api.stoprecording();
-    }
-    else{
-        recording = true;
-        document.getElementById("recording").innerHTML = "Stop"
-        startRecording();
-    }
+function toggleRecording() {
+  if (recording) {
+    recording = false;
+    document.getElementById("recording").innerHTML = "Record"
+    // window.api.stoprecording();
+  }
+  else {
+    recording = true;
+    document.getElementById("recording").innerHTML = "Stop"
+    startRecording();
+  }
 }
 
 
@@ -66,22 +66,23 @@ function startRecording() {
   canvas.height = parseInt(canvas.style.height);
   console.log("recording started!");
   function errorCallback(e) {
-      console.log('Error', e)
+    console.log('Error', e)
   }
 
-  window.navigator.getUserMedia( {
-      audio: false,
-      video: {
-          mandatory: {
-              // label: "HD Webcam C615 (046d:082c)"
-              chromeMediaSourceId: mediaID,
-          }
-      }},
-  (localMediaStream) => {
-    filename = Date.now();
-    handleStream(localMediaStream);
+  window.navigator.getUserMedia({
+    audio: false,
+    video: {
+      mandatory: {
+        // label: "HD Webcam C615 (046d:082c)"
+        chromeMediaSourceId: mediaID,
+      }
+    }
+  },
+    (localMediaStream) => {
+      filename = Date.now();
+      handleStream(localMediaStream);
 
-  }, errorCallback)
+    }, errorCallback)
 
 }
 
@@ -90,60 +91,60 @@ function handleStream(stream) {
   camera = new ImageCapture(track);
   recorder = new MediaRecorder(stream);
   blobs = [];
-  recorder.ondataavailable = function(event) {
-      blobs.push(event.data);
+  recorder.ondataavailable = function (event) {
+    blobs.push(event.data);
   };
   recorder.start();
   if ("srcObject" in vidstream) {
-      vidstream.srcObject = stream;
+    vidstream.srcObject = stream;
   } else {
-      vidstream.src = window.URL.createObjectURL(stream);
+    vidstream.src = window.URL.createObjectURL(stream);
   }
 
   requestAnimationFrame(tick);
 
 }
 
-function tick(){
+function tick() {
   requestAnimationFrame(tick);
-  if (video.readyState === video.HAVE_ENOUGH_DATA){
-      VI.snapshot(context);
+  if (video.readyState === video.HAVE_ENOUGH_DATA) {
+    VI.snapshot(context);
 
-      var markers = detector.detect(VI.imageData);
+    var markers = detector.detect(VI.imageData);
+    VI.drawCorners(context, markers);
+    VI.findcorners(markers);
+
+
+    if (!firstfind) {
+      if (VI.allcornersfound()) {
+        firstfind = true;
+      }
+    }
+    if (VI.allcornersfound()) {
+      VI.findmainbox();
+      VI.drawId(context, markers);
+      if (firstfind) {
+        markers.push(VI.workingbox);
+      }
       VI.drawCorners(context, markers);
-      VI.findcorners(markers);
-
-
-      if(!firstfind){
-          if(VI.allcornersfound()){
-              firstfind = true;
+      markers.forEach((marker) => {
+        if (MP.in_box(marker.corners, VI.workingbox)) {
+          if (marker.id == 603) {
+            let refpoint = MP.findcenter(marker.corners)
+            let point = VI.getRealPos(VI.workingbox.corners, refpoint, des);
+            windowManager.sharedData.set("cup887", { x: point[0], y: point[1], refx: refpoint.x, refy: refpoint.y })
           }
-      }
-      if(VI.allcornersfound()){
-          VI.findmainbox();
-          VI.drawId(context, markers);
-          if(firstfind){
-              markers.push(VI.workingbox);
+          if (marker.id == 722) {
+            let refpoint = MP.findcenter(marker.corners)
+            let point = VI.getRealPos(VI.workingbox.corners, refpoint, des);
+            windowManager.sharedData.set("cup502", { x: point[0], y: point[1], refx: refpoint.x, refy: refpoint.y })
           }
-          VI.drawCorners(context, markers); 
-          markers.forEach((marker) => {
-            if(MP.in_box(marker.corners, VI.workingbox)){
-                if(marker.id == 887){
-                  let refpoint = MP.findcenter(marker.corners)
-                  let point = VI.getRealPos(VI.workingbox.corners, refpoint, des);
-                  windowManager.sharedData.set("cup887", {x:point[0], y:point[1], refx:refpoint.x, refy:refpoint.y})
-                }
-                if(marker.id == 502){
-                  let refpoint = MP.findcenter(marker.corners)
-                  let point = VI.getRealPos(VI.workingbox.corners, refpoint, des);
-                  windowManager.sharedData.set("cup502", {x:point[0], y:point[1], refx:refpoint.x, refy:refpoint.y})
-                }
-            }
-          })
-      }
+        }
+      })
+    }
   }
 }
 
-function showmedia(){
+function showmedia() {
   console.log(navigator.mediaDevices.enumerateDevices());
 }
