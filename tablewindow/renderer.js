@@ -69,9 +69,16 @@ windowManager.sharedData.watch("cup502", function (prop, action, newValue, oldVa
 windowManager.sharedData.watch("chat887", function (prop, action, newValue, oldValue) {
     console.log(newValue)
     let text = document.getElementById("chat887")
-    // text.append(newValue.name + ": " + newValue.message)
     const child = document.createElement('p');
-    child.append(newValue.name + ": " + newValue.message)
+    const user = document.createElement('span');
+    user.append(newValue.name + ": ");
+    user.classList.add('username');
+    const message = document.createElement('span');
+    message.append(newValue.message);
+    child.appendChild(user);
+    child.appendChild(message);
+
+    // child.append(newValue.name + ": " + newValue.message)
     text.appendChild(child);
 
     console.log("nodes:" + text.childNodes.length)
@@ -85,10 +92,26 @@ windowManager.sharedData.watch("chat502", function (prop, action, newValue, oldV
     let text = document.getElementById("chat502")
     // text.append(newValue.name + ": " + newValue.message)
     const child = document.createElement('p');
-    child.append(newValue.name + ": " + newValue.message)
+    const user = document.createElement('span');
+    user.append(newValue.name + ": ");
+    user.classList.add('username');
+    const message = document.createElement('span');
+    message.append(newValue.message);
+    child.appendChild(user);
+    child.appendChild(message);
+
+    // child.append(newValue.name + ": " + newValue.message)
     text.appendChild(child);
 
     if (text.childNodes.length > 5) {
         text.removeChild(text.firstChild);
     }
 })
+
+// windowManager.sharedData.watch("chat", function (prop, action, newValue, oldValue) {
+//     console.log(newValue)
+//     if (newValue) {
+//         let chatA = document.getElementById("chat887").style.visibility = "visible";
+//         let chatB = document.getElementById("chat502").style.visibility = "visible";
+//     }
+// })

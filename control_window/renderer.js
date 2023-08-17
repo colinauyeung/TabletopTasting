@@ -148,3 +148,7 @@ function tick() {
 function showmedia() {
   console.log(navigator.mediaDevices.enumerateDevices());
 }
+
+function showChat() {
+  windowManager.sharedData.set("chat", true);
+}

@@ -7,6 +7,10 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://code.jquery.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src * data:;">
     <link href="./styles.css" rel="stylesheet">
     <title>Hello World!</title>
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <!-- Load d3-cloud -->
+    <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
   </head>
   <body>
     <!-- <h1>Hello World!</h1>
@@ -17,15 +21,15 @@
     <div class="" id="cup887">
         <div class="circletext" id="text887">
           <h1> Coffee A</h1>
-          <div id="chat887"></div>
-          <!-- <textarea rows="6" cols="20"></textarea> -->
+          <div hidden id="chat887"></div>
+          <textarea hidden id="chat887notes" rows="6" cols="20"></textarea>
         </div>
     </div>
     <div class="" id="cup502">
       <div class="circletext" id="text502">
         <h1> Coffee B</h1>
-        <div id="chat502"></div>
-        <!-- <textarea rows="6" cols="20"></textarea> -->
+        <div hidden id="chat502"></div>
+        <textarea hidden id="chat502notes" rows="6" cols="20"></textarea>
       </div>
     </div>
 
@@ -33,6 +37,5 @@
     <!-- You can also require other files to run in this process -->
     <script src="./renderer.js"></script>
 
-    
   </body>
 </html>
