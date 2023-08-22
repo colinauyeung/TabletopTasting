@@ -7,6 +7,9 @@ const windowManager = require('electron-window-manager');
 const path = require('path')
 var flip = true;
 
+var localchannels = ["mizkif", "kyedae"]
+
+
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -74,21 +77,21 @@ app.whenReady().then(() => {
   win2.open();
   win2.object.setAlwaysOnTop(true, level = "status");
 
-  var win3 = windowManager.createNew("Tabletop2", "Tabletop", "file://" + __dirname + "/tablewindow2/index.html",
-    false, {
-    'width': 1280,
-    'height': 720,
-    resizable: true,
-    'webPreferences': {
-      nodeIntegration: true,
-      contextIsolation: false,
-      enableRemoteModule: true,
-      preload: path.join(__dirname, 'preload.js')
-    }
-  });
+  // var win3 = windowManager.createNew("Tabletop2", "Tabletop", "file://" + __dirname + "/tablewindow2/index.html",
+  //   false, {
+  //   'width': 1280,
+  //   'height': 720,
+  //   resizable: true,
+  //   'webPreferences': {
+  //     nodeIntegration: true,
+  //     contextIsolation: false,
+  //     enableRemoteModule: true,
+  //     preload: path.join(__dirname, 'preload.js')
+  //   }
+  // });
 
-  win3.open();
-  win3.object.setAlwaysOnTop(true, level = "status");
+  // win3.open();
+  // win3.object.setAlwaysOnTop(true, level = "status");
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
@@ -107,7 +110,7 @@ app.whenReady().then(() => {
       username: 'icosah',
       password: process.env.OAUTH
     },
-    channels: ['icosah']
+    channels: localchannels
   });
 
   client.connect();
@@ -115,6 +118,13 @@ app.whenReady().then(() => {
   client.on('message', (channel, tags, message, self) => {
     // Ignore echoed messages.
     if (self) return;
+    if(channel === localchannels[0]){
+      windowManager.sharedData.set("chat887", {name:tags.username, message:message});
+    }
+    else{
+      windowManager.sharedData.set("chat502", {name:tags.username, message:message});
+    }
+   
     //Code if I want to run it on a random chat
     // if(flip){
     //   windowManager.sharedData.set("chat887", {name:tags.username, message:message});
@@ -124,17 +134,17 @@ app.whenReady().then(() => {
     //   windowManager.sharedData.set("chat502", {name:tags.username, message:message});
     //   flip = !flip
     // }
-    let bits = message.split(" ");
-    if (bits.length > 1) {
-      if (bits[0].toLowerCase() === '!a') {
-        windowManager.sharedData.set("chat887", { name: tags.username, message: bits[1] });
-        // client.say(channel, `@${tags.username}, Yo what's up`);
+    // let bits = message.split(" ");
+    // if (bits.length > 1) {
+    //   if (bits[0].toLowerCase() === '!a') {
+    //     windowManager.sharedData.set("chat887", { name: tags.username, message: bits[1] });
+    //     // client.say(channel, `@${tags.username}, Yo what's up`);
 
-      }
-      if (bits[0].toLowerCase() === "!b") {
-        windowManager.sharedData.set("chat502", { name: tags.username, message: bits[1] });
-      }
-    }
+    //   }
+    //   if (bits[0].toLowerCase() === "!b") {
+    //     windowManager.sharedData.set("chat502", { name: tags.username, message: bits[1] });
+    //   }
+    // }
   });
 })
 

@@ -4,20 +4,23 @@
     <meta charset="UTF-8">
     
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://code.jquery.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src * data:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://code.jquery.com 'unsafe-inline' 'unsafe-eval' https://d3js.org; style-src 'self' 'unsafe-inline'; img-src * data:;">
     <link href="./styles.css" rel="stylesheet">
     <title>Hello World!</title>
     <!-- Load d3.js -->
     <script src="https://d3js.org/d3.v4.js"></script>
     <!-- Load d3-cloud -->
-    <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script> -->
   </head>
   <body>
     <!-- <h1>Hello World!</h1>
     We are using Node.js <span id="node-version"></span>,
     Chromium <span id="chrome-version"></span>,
     and Electron <span id="electron-version"></span>. -->
-    <div id="mainbox"></div>
+  
+    <svg width="1250" height="700"></svg>
+
+    <!-- <div id="mainbox"></div>
     <div class="" id="cup887">
         <div class="circletext" id="text887">
           <h1> Coffee A</h1>
@@ -33,8 +36,8 @@
       </div>
     </div>
 
-
-    <!-- You can also require other files to run in this process -->
+ 
+    You can also require other files to run in this process -->
     <script src="./renderer.js"></script>
 
   </body>
