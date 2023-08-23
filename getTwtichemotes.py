@@ -17,6 +17,12 @@ for emote in data["data"]:
     url = emote["images"]["url_4x"]
     nameres = name.replace("\\", "1")
     nameres = nameres.replace("/", "2")
+    if(":" in nameres):
+        continue
+    if("<" in nameres):
+        continue
+    if(">" in nameres):
+        continue
     urllib.request.urlretrieve(url, "{0}/{1}.jpg".format(path, nameres))
     namedb.append(nameres)
 

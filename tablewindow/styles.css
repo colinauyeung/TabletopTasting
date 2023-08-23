@@ -42,22 +42,60 @@ body {
 }
 
 .previewbox{
-    height: 200px;
-    width: 700px;
-    background-color: teal;
-  }
-  
-  .previewimg{
-    height: 200px;
-    width: 200px;
-    float:left;
-  }
-  
-  .previewtext{
-    padding: 10px 0px 10px 205px;
-    color: white;
-  }
+  height: 200px;
+  width: 700px;
+  background-color: teal;
+}
 
-  p {
-    margin: 0px;
+.previewimg{
+  height: 200px;
+  width: 200px;
+  float:left;
+}
+
+.previewtext{
+  padding: 10px 0px 10px 205px;
+  color: white;
+}
+
+p {
+  margin: 0px;
+}
+
+.test{
+  animation: up 6.25s 233ms infinite;
+  
+}
+
+.test2{
+  animation: wobble 3s 275ms infinite ease-in-out;
+}
+
+@keyframes wobble {
+
+  33% {
+    transform: translateX(-50px);
   }
+  
+  66% {
+    transform: translateX(50px);
+  }
+  
+}
+
+@keyframes up {
+
+  0% {
+    opacity: 0;
+  }
+  
+  10%, 90% {
+    opacity: 1;
+  }
+  
+  100% {
+    opacity: 0;
+    transform: translateY(-1024px);
+  }
+  
+}

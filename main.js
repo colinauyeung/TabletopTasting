@@ -7,7 +7,7 @@ const windowManager = require('electron-window-manager');
 const path = require('path')
 var flip = true;
 
-var localchannels = ["mizkif", "kyedae"]
+var localchannels = ["daisuketestbot", "jingburger"]
 
 
 function createWindow() {
@@ -118,12 +118,15 @@ app.whenReady().then(() => {
   client.on('message', (channel, tags, message, self) => {
     // Ignore echoed messages.
     if (self) return;
-    if(channel === localchannels[0]){
+    console.log(message);
+    if(channel===localchannels[0]){
       windowManager.sharedData.set("chat887", {name:tags.username, message:message});
     }
     else{
       windowManager.sharedData.set("chat502", {name:tags.username, message:message});
     }
+    
+  
    
     //Code if I want to run it on a random chat
     // if(flip){
