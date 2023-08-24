@@ -7,7 +7,7 @@ const windowManager = require('electron-window-manager');
 const path = require('path')
 var flip = true;
 
-var localchannels = ["jingburger", "kato_junichi0817"]
+var localchannels = ["northernlion", "kato_junichi0817"]
 
 
 function createWindow() {

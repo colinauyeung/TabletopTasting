@@ -323,8 +323,14 @@ windowManager.sharedData.watch("chat502", function (prop, action, newValue, oldV
 var timestamp = 0;
 windowManager.sharedData.watch("cup887", function (prop, action, newValue, oldValue) {
     // var cup = document.getElementById("cup887")
-    let x = newValue.refx - 25;
-    let y = newValue.refy - 25;
+
+
+    
+
+
+
+    let x = ((newValue.refx - 625) * 1.50)+625;
+    let y = ((newValue.refy-350)*1.5)+350;
     // let time = Date.now();
     // if (time > timestamp + 1000) {
     //     timestamp = time;
@@ -341,8 +347,9 @@ windowManager.sharedData.watch("cup887", function (prop, action, newValue, oldVa
 var timestamp2 = 0;
 windowManager.sharedData.watch("cup502", function (prop, action, newValue, oldValue) {
     // var cup = document.getElementById("cup502")
-    let x = newValue.refx - 25;
-    let y = newValue.refy - 25 - (50 * 1);
+    console.log(newValue);
+    let x = ((newValue.refx - 625) * 1.50)+625;
+    let y = ((newValue.refy-350)*1.5)+350;
     // let time = Date.now();
     // if (time > timestamp2 + 1000) {
     //     timestamp2 = time;
@@ -351,7 +358,9 @@ windowManager.sharedData.watch("cup502", function (prop, action, newValue, oldVa
     node.each(d=>{
         if(d.id === "cup2"){
             d.fx = x;
+            // d.fx = newValue.refx;
             d.fy = y;
+            // d.fy = newValue.refy;
         }
     })
 })
