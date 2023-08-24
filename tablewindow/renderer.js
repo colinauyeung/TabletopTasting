@@ -67,7 +67,7 @@ var data = [];
 
 function calcsize(weight, ltotal){
     // console.log((42 * (weight/total)) + 8)
-    return ((10 * (weight/ltotal))*4) + 10
+    return ((10 * (weight/ltotal))*4) + 20
 }
 
 setInterval(d=>{
@@ -238,21 +238,21 @@ windowManager.sharedData.watch("chat502", function(prop, action, newValue, oldVa
         cup.appendChild(img);
     }
     else{
-        let mainbox = document.getElementById("mainbox");
-        let textbox = document.createElement("div");
-        textbox.className = "circletext";
-        textbox.innerHTML = newValue.message;
-        var percent = 100;
-        textbox.style.left = percent+"%";
-        var height = 10+(Math.random()*80)
-        textbox.style.top = height+"%"
-        var size = 14+Math.ceil(Math.random()*16)
-        textbox.style.fontSize = size+"px";
-        var timer = setInterval(function(){
-            percent = percent - 0.1;
-            textbox.style.left = percent+"%";
-        }, 20)
-        mainbox.appendChild(textbox);
+        // let mainbox = document.getElementById("mainbox");
+        // let textbox = document.createElement("div");
+        // textbox.className = "circletext";
+        // textbox.innerHTML = newValue.message;
+        // var percent = 100;
+        // textbox.style.left = percent+"%";
+        // var height = 10+(Math.random()*80)
+        // textbox.style.top = height+"%"
+        // var size = 14+Math.ceil(Math.random()*16)
+        // textbox.style.fontSize = size+"px";
+        // var timer = setInterval(function(){
+        //     percent = percent - 0.1;
+        //     textbox.style.left = percent+"%";
+        // }, 20)
+        // mainbox.appendChild(textbox);
 
         var localwords = seperate(newValue.message);
         

@@ -5,7 +5,7 @@
 // selectively enable features needed in the rendering
 // process.
 
-var mediaID = "5bfedf5942f34fec96ebbf7642b8f8b0ffa959a596f15883d9a6eb6906276486"
+var mediaID = "8f3aa377ae038af6ab0d6757d0c7c4a948e9bb06c07613965a667bd4fbf08993"
 var electron = require('electron');
 
 var AR = require("../src/aruco").AR;
@@ -129,12 +129,12 @@ function tick() {
       VI.drawCorners(context, markers);
       markers.forEach((marker) => {
         if (MP.in_box(marker.corners, VI.workingbox)) {
-          if (marker.id == 603) {
+          if (marker.id == 887) {
             let refpoint = MP.findcenter(marker.corners)
             let point = VI.getRealPos(VI.workingbox.corners, refpoint, des);
             windowManager.sharedData.set("cup887", { x: point[0], y: point[1], refx: refpoint.x, refy: refpoint.y })
           }
-          if (marker.id == 722) {
+          if (marker.id == 502) {
             let refpoint = MP.findcenter(marker.corners)
             let point = VI.getRealPos(VI.workingbox.corners, refpoint, des);
             windowManager.sharedData.set("cup502", { x: point[0], y: point[1], refx: refpoint.x, refy: refpoint.y })
