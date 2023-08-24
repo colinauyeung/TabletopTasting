@@ -167,6 +167,9 @@ const WebSocket = require('ws');
 const wss = new WebSocket.Server({ port: 8080 });
 const clients = new Map();
 
+let poll = false;
+var votesA = 0;
+
 wss.on('connection', function connection(ws) {
   ws.on('message', function message(data) {
     console.log("type:" + data + " " + typeof (data))
@@ -176,8 +179,23 @@ wss.on('connection', function connection(ws) {
       windowManager.sharedData.set("chat887", { name: object.username, message: object.content });
     } else if (object.channel == "b") {
       windowManager.sharedData.set("chat502", { name: object.username, message: object.content });
+    } else if (object.channel == "general" && poll == true) {
+      if (object.content.includes("1")) {
+        votesA++;
+        console.log("Votes for 1: " + votesA);
+        windowManager.sharedData.set("votesA", { votes: votesA });
+      }
+    }
+
+    if (object.content == "!poll") {
+      poll = true;
+      console.log("Poll started")
     }
   });
 });
 
+// if message is from mod & is poll -> start poll
+// if message is in general & is a 1, then increment A by 1?
+// if message is in general & is a 2, then increment B by 1
+// on message -> update svg
 
