@@ -71,7 +71,7 @@ p {
   animation: wobble 3s 275ms infinite ease-in-out;
 }
 
-@keyframes wobble {
+@keyframes wobble1 {
 
   33% {
     transform: translateX(-50px);
@@ -79,6 +79,18 @@ p {
   
   66% {
     transform: translateX(50px);
+  }
+  
+}
+
+@keyframes wobble2 {
+
+  33% {
+    transform: translateX(50px);
+  }
+  
+  66% {
+    transform: translateX(-50px);
   }
   
 }
@@ -98,4 +110,18 @@ p {
     transform: translateY(-1024px);
   }
   
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  
+  10%, 90% {
+    opacity: 1;
+  }
+  
+  100% {
+    opacity: 0;
+  }
 }

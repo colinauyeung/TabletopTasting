@@ -3,6 +3,7 @@ require('dotenv').config()
 const remote = require('electron').remote
 const windowManager = remote.require('electron-window-manager');
 const linkPreviewGenerator = require("link-preview-generator");
+const cloud = require("d3-cloud");
 
 const emotes = ['MechaRobot', 'ImTyping', 'Shush', 'MyAvatar', 
 'PizzaTime', 'LaundryBasket', 'ModLove', 'PotFriend', 'Jebasted', 
@@ -44,6 +45,81 @@ const emotes = ['MechaRobot', 'ImTyping', 'Shush', 'MyAvatar',
 'PJSalt', 'SwiftRage', 'DansGame', 'GingerPower', 'BCWarrior', 'MrDestructoid',
 'JonCarnage', 'Kappa', 'RedCoat', 'TheRinger', 'StoneLightning', 'OptimizePrime', 'JKanStyle',
 'R)', ';P', ':P', ';)', ':2', '<3', ':O', 'B)', 'O_o', ':|', '>(', ':D', ':(', ':)']
+
+//https://observablehq.com/@d3/word-cloud
+const stopwords = new Set("i,me,my,myself,we,us,our,ours,ourselves,you,your,yours,yourself,yourselves,he,him,his,himself,she,her,hers,herself,it,its,itself,they,them,their,theirs,themselves,what,which,who,whom,whose,this,that,these,those,am,is,are,was,were,be,been,being,have,has,had,having,do,does,did,doing,will,would,should,can,could,ought,i'm,you're,he's,she's,it's,we're,they're,i've,you've,we've,they've,i'd,you'd,he'd,she'd,we'd,they'd,i'll,you'll,he'll,she'll,we'll,they'll,isn't,aren't,wasn't,weren't,hasn't,haven't,hadn't,doesn't,don't,didn't,won't,wouldn't,shan't,shouldn't,can't,cannot,couldn't,mustn't,let's,that's,who's,what's,here's,there's,when's,where's,why's,how's,a,an,the,and,but,if,or,because,as,until,while,of,at,by,for,with,about,against,between,into,through,during,before,after,above,below,to,from,up,upon,down,in,out,on,off,over,under,again,further,then,once,here,there,when,where,why,how,all,any,both,each,few,more,most,other,some,such,no,nor,not,only,own,same,so,than,too,very,say,says,said,shall".split(","))
+
+function seperate(word){
+    return words = word.split(/[\s.]+/g)
+    .map(w => w.replace(/^[“‘"\-—()\[\]{}]+/g, ""))
+    .map(w => w.replace(/[;:.!?()\[\]{},"'’”\-—]+$/g, ""))
+    .map(w => w.replace(/['’]s$/g, ""))
+    .map(w => w.substring(0, 30))
+    .map(w => w.toLowerCase())
+    .filter(w => w && !stopwords.has(w))
+}
+
+//https://stackoverflow.com/questions/26881137/create-dynamic-word-cloud-using-d3-js
+
+var fill = d3.scaleOrdinal(d3.schemeCategory10);
+var total = 1;
+var data = [];
+
+function calcsize(weight, ltotal){
+    // console.log((42 * (weight/total)) + 8)
+    return ((10 * (weight/ltotal))*4) + 10
+}
+
+setInterval(d=>{
+    data.sort((a,b)=>{return -(a.count - b.count)});
+    var data2 = data.slice(0, 30);
+    var max = 1;
+    var total2 = 0;
+    data2.forEach(d=>{
+        if(d.count > max){
+            max = d.count;
+        }
+        total2 = total2 + d.count;
+    });
+    // var scale = d3.scalePow([10,50],[1,max]);
+    data2.forEach(d=>{
+        d.weight = calcsize(d.count,total2);
+        // d.weight = scale(d.count);
+    })
+    cloud().size([300, 300])
+      .words(data2.map(function(d) {
+        return {text: d.word, size: d.weight};
+      }))
+      .padding(1) 
+      .rotate(function() { return ~~(Math.random() * 2) * 90; })
+      .fontSize(function(d) { return d.size; })
+      .on("end", draw)
+      .start();
+
+    function draw(words) {
+    
+      console.log(words)
+      document.getElementById("cloud").innerHTML = "";
+      d3.select("#cloud")
+        .attr("width", 300)
+        .attr("height", 300)
+        .style("animation", "fade 10000ms 0ms infinite")
+      .append("g")
+        .attr("transform", "translate(150,150)")
+      .selectAll("text")
+        .data(words)
+      .enter().append("text")
+        .style("font-size", function(d) { return d.size + "px"; })
+        .style("fill", function(d, i) { return fill(i); })
+        .attr("text-anchor", "middle")
+        .attr("transform", function(d) {
+
+          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+        })
+        .text(function(d) { return d.text; });
+  }
+}, 10000);
+
 
 //https://stackoverflow.com/questions/6121203/how-to-do-fade-in-and-fade-out-with-javascript-and-css
 function fade(element) {
@@ -178,7 +254,35 @@ windowManager.sharedData.watch("chat502", function(prop, action, newValue, oldVa
         }, 20)
         mainbox.appendChild(textbox);
 
+        var localwords = seperate(newValue.message);
+        
+        localwords.forEach(d=>{
+            var found = false;
+            data.forEach(e=>{
+                if(d===e.word){
+                    e.count = e.count +1;
+                    e.weight=calcsize(e.count)
+                    found = true;
+                }
+            })  
+            if(!found){
+                data.push({word:d, count:1, weight:calcsize(1)});
+            }  
+            total = total + 1
+            data.forEach(e=>{
+                // if(d===e.word){
+                    // e.count = e.count +1;
+                e.weight=calcsize(e.count);
+                    // found = true;
+                // }
+            })  
+        })
+     
+
     }
 
 
 })
+
+
+
