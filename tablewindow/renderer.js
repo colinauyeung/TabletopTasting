@@ -151,15 +151,17 @@ windowManager.sharedData.watch("chat887", function(prop, action, newValue, oldVa
 
 })
 
+var palette = ["#F5C1C1", "#FFFAB0", "#CBF2B8", "#DFC5E8", "#BAEEE5"]
+
 windowManager.sharedData.watch("chat502", function(prop, action, newValue, oldValue){
     console.log(newValue)
     if(emotes.includes(newValue.message)){
-        let cup = document.getElementById("text502")
-        // cup.appendChild(el);
-        let img = document.createElement("img");
-        img.src = `../twitchemotes/${newValue.message}.jpg`;
-        fade(img)
-        cup.appendChild(img);
+        // let cup = document.getElementById("text502")
+        // // cup.appendChild(el);
+        // let img = document.createElement("img");
+        // img.src = `../twitchemotes/${newValue.message}.jpg`;
+        // fade(img)
+        // cup.appendChild(img);
     }
     else{
         let mainbox = document.getElementById("mainbox");
@@ -172,6 +174,8 @@ windowManager.sharedData.watch("chat502", function(prop, action, newValue, oldVa
         textbox.style.top = height+"%"
         var size = 14+Math.ceil(Math.random()*16)
         textbox.style.fontSize = size+"px";
+        var ran = Math.floor(Math.random()*4.9)
+        textbox.style.color = palette[ran]
         var timer = setInterval(function(){
             percent = percent - 0.1;
             textbox.style.left = percent+"%";
