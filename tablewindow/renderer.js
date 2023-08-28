@@ -66,6 +66,14 @@ windowManager.sharedData.watch("cup502", function (prop, action, newValue, oldVa
     setTranslate(x, y, cup);
 })
 
+const colors = ["Blue", "BlueViolet", "Coral", "Chartreuse", "DarkGreen",
+    "DarkGoldenRod", "Crimson", "Orange", "Gold", "PowderBlue", "Peru", "Pink", "Plum",
+    "SlateGray", "Teal", "LightGreen", "Maroon"]
+function randomcolor() {
+    var index = Math.ceil(Math.random() * colors.length)
+    return colors[index]
+}
+
 windowManager.sharedData.watch("chat887", function (prop, action, newValue, oldValue) {
     console.log(newValue)
     let text = document.getElementById("chat887")
@@ -73,6 +81,7 @@ windowManager.sharedData.watch("chat887", function (prop, action, newValue, oldV
     const user = document.createElement('span');
     user.append(newValue.name + ": ");
     user.classList.add('username');
+    user.style.color = randomcolor();
     const message = document.createElement('span');
     message.append(newValue.message);
     child.appendChild(user);
@@ -95,6 +104,7 @@ windowManager.sharedData.watch("chat502", function (prop, action, newValue, oldV
     const user = document.createElement('span');
     user.append(newValue.name + ": ");
     user.classList.add('username');
+    user.style.color = randomcolor();
     const message = document.createElement('span');
     message.append(newValue.message);
     child.appendChild(user);

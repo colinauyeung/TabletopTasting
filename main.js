@@ -154,11 +154,22 @@ const WebSocket = require('ws');
 const wss = new WebSocket.Server({ port: 8080 });
 const clients = new Map();
 
+const usernames = ["bob123", "northernlion", "xQc", "scarra", "lilypichu"]
+const messages = ["wow that coffee looks good", "KEKW", "omg", "the weather is nice today", "uh my cat ran away"]
+
+const usernames2 = ["pokimane", "disguisedtoast", "boxbox", "hasanabi", "loganpaul"]
+const messages2 = ["i am a girlboss", "that guys toast", "POG", "trickle down economics", "damn bro"]
+
 wss.on('connection', function connection(ws) {
   ws.on('message', function message(data) {
     console.log("type:" + data + " " + typeof (data))
     var object = JSON.parse(data);
     console.log('received: ' + object.username);
+    // fake data for photos
+    // for (let i = 0; i < 5; i++) {
+    //   windowManager.sharedData.set("chat887", { name: usernames[i], message: messages[i] });
+    //   windowManager.sharedData.set("chat502", { name: usernames2[i], message: messages2[i] });
+    // }
     if (object.channel == "a") {
       windowManager.sharedData.set("chat887", { name: object.username, message: object.content });
     } else if (object.channel == "b") {
