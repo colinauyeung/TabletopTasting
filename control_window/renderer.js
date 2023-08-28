@@ -129,12 +129,12 @@ function tick() {
       VI.drawCorners(context, markers);
       markers.forEach((marker) => {
         if (MP.in_box(marker.corners, VI.workingbox)) {
-          if (marker.id == 603) {
+          if (marker.id == 887) {
             let refpoint = MP.findcenter(marker.corners)
             let point = VI.getRealPos(VI.workingbox.corners, refpoint, des);
             windowManager.sharedData.set("cup887", { x: point[0], y: point[1], refx: refpoint.x, refy: refpoint.y })
           }
-          if (marker.id == 722) {
+          if (marker.id == 502) {
             let refpoint = MP.findcenter(marker.corners)
             let point = VI.getRealPos(VI.workingbox.corners, refpoint, des);
             windowManager.sharedData.set("cup502", { x: point[0], y: point[1], refx: refpoint.x, refy: refpoint.y })
