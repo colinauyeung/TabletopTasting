@@ -169,6 +169,7 @@ const clients = new Map();
 
 let poll = false;
 var votesA = 0;
+var votesB = 0;
 
 wss.on('connection', function connection(ws) {
   ws.on('message', function message(data) {
@@ -179,11 +180,15 @@ wss.on('connection', function connection(ws) {
       windowManager.sharedData.set("chat887", { name: object.username, message: object.content });
     } else if (object.channel == "b") {
       windowManager.sharedData.set("chat502", { name: object.username, message: object.content });
-    } else if (object.channel == "general" && poll == true) {
-      if (object.content.includes("1")) {
+    } else if (poll == true) {
+      if (object.content == "1") {
         votesA++;
         console.log("Votes for 1: " + votesA);
         windowManager.sharedData.set("votesA", { votes: votesA });
+      } else if (object.content == "2") {
+        votesB++;
+        console.log("Votes for 2: " + votesA);
+        windowManager.sharedData.set("votesB", { votes: votesB });
       }
     }
 
