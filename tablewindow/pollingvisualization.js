@@ -6,6 +6,7 @@ height = 70;
 total = 0
 
 const margin = { top: 50, bottom: 50, left: 50, right: 50 }
+var format = d3.format(".0%")
 
 // Object A
 var svgA = d3.select("#text887")
@@ -46,6 +47,19 @@ svgA.append('g')
     .attr('height', y.bandwidth())
     .attr('width', (votesA[0] / total) * width)
 
+svgA.select("#rectA") // adding the text labels to the bar
+    .data(votesA)
+    .enter().append("text")
+    .attr("id", "textB")
+    .attr("x", 465)
+    .attr("y", 35) // y position of the text inside bar
+    .attr("dx", -3) // padding-right
+    .attr("dy", ".35em") // vertical-align: middle
+    .attr("text-anchor", "end") // text-align: right
+    .attr("fill", "white")
+    .attr("font-size", "20px")
+    .text("0% (0)");
+
 svgA.node()
 
 var svgB = d3.select("#text502")
@@ -77,6 +91,19 @@ svgB.append('g')
     .attr('height', y.bandwidth())
     .attr('width', (votesB[0] / total) * width)
 
+svgB.select("#rectB") // adding the text labels to the bar
+    .data(votesB)
+    .enter().append("text")
+    .attr("id", "textB")
+    .attr("x", 465)
+    .attr("y", 35) // y position of the text inside bar
+    .attr("dx", -3) // padding-right
+    .attr("dy", ".35em") // vertical-align: middle
+    .attr("text-anchor", "end") // text-align: right
+    .attr("fill", "white")
+    .attr("font-size", "20px")
+    .text("0% (0)");
+
 svgB.node()
 
 // update votes for object A
@@ -84,8 +111,8 @@ windowManager.sharedData.watch("votesA", function (prop, action, newValue, oldVa
     console.log("A: " + newValue.votes);
     votesA[0]++;
     total++;
-    updateBar("#rectA", votesA);
-    updateBar("#rectB", votesB)
+    updateBar("A", votesA);
+    updateBar("B", votesB)
 })
 
 // update votes for object B
@@ -93,12 +120,12 @@ windowManager.sharedData.watch("votesB", function (prop, action, newValue, oldVa
     console.log("B: " + newValue.votes);
     votesB[0]++;
     total++;
-    updateBar("#rectA", votesA);
-    updateBar("#rectB", votesB)
+    updateBar("A", votesA);
+    updateBar("B", votesB)
 })
 
-function updateBar(rect, votes) {
-    var rects = d3.select(rect)
+function updateBar(object, votes) {
+    var rects = d3.select("#rect" + object)
         .selectAll("rect")
         .data(votesA);
 
@@ -118,4 +145,34 @@ function updateBar(rect, votes) {
     // exit selection
     rects
         .exit().remove();
+
+    // update text
+    let percent = (votes / total)
+    console.log(percent);
+    var texts = d3.select("#rect" + object)
+        .selectAll("text")
+        .data(votesA);
+
+    console.log(texts);
+    // enter selection
+    texts
+        .enter().append("text");
+
+    // update selection
+    texts
+        .attr("x", 480)
+        .attr("y", 35) // y position of the text inside bar
+        .attr("dx", -3) // padding-right
+        .attr("dy", ".35em") // vertical-align: middle
+        .attr("text-anchor", "end") // text-align: right
+        .attr("fill", "white")
+        .attr("font-size", "20px")
+        .text(format(percent) + " (" + votes + ")");
+
+
+    // exit selection
+    texts
+        .exit().remove();
+
+
 }
