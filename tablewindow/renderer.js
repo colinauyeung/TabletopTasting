@@ -239,6 +239,10 @@ function hide(){
     for(var i = 0; i<scrallchat.length; i++){
         scrallchat[i].style.visibility = "hidden"
     }
+    var bars = document.getElementsByClassName("bars");
+    for(var i = 0; i<clouds.length; i++){
+        bars[i].style.visibility = "hidden"
+    }
     emotestoggle = false;
     chatbackgroundtoggle = false;
     cloudtoggle = false;
@@ -285,6 +289,13 @@ document.addEventListener("keydown", (event) => {
     if(event.code==="Digit6"){
         document.getElementById("chat502notes").style.visibility = "visible";
         document.getElementById("chat887notes").style.visibility = "visible";
+    }
+
+    if(event.code==="Digit7"){
+        var bars = document.getElementsByClassName("bars");
+        for(var i = 0; i<bars.length; i++){
+            bars[i].style.visibility = "visible"
+        }
     }
     console.log(event.code);
 });

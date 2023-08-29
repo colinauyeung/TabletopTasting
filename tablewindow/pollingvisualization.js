@@ -9,8 +9,7 @@ const margin = { top: 50, bottom: 50, left: 50, right: 50 }
 var format = d3.format(".0%")
 
 // Object A
-var svgA = d3.select("#text887")
-    .append('svg')
+var svgA = d3.select("#barA")
     .attr("width", width)
     .attr("height", height)
     .attr('viewBox', [0, 0, width, height]);
@@ -62,8 +61,7 @@ svgA.select("#rectA") // adding the text labels to the bar
 
 svgA.node()
 
-var svgB = d3.select("#text502")
-    .append('svg')
+var svgB = d3.select("#barB")
     .attr("width", width)
     .attr("height", height)
     .attr('viewBox', [0, 0, width, height]);
