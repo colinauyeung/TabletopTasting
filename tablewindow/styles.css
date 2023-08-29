@@ -14,13 +14,22 @@ body {
     left: 0px;
 }
 
-.circletext{
+.scrollchat{
     font-family: sans-serif;
     width: 300px;
     left: 60px;
     position:absolute;
     color: white;
     word-wrap: break-word;
+}
+
+.circletext{
+  font-family: sans-serif;
+  width: 300px;
+  left: 60px;
+  position:absolute;
+  color: white;
+  word-wrap: break-word;
 }
 
 .username{
@@ -39,6 +48,26 @@ body {
 
 #mainbox::-webkit-scrollbar {
     display: none; /* for Chrome, Safari, and Opera */
+}
+
+.boxx{
+  /* height: 200px;
+  width: 200px; */
+  float:left;
+  position: absolute;
+  /* visibility: visible; */
+  left: 0;
+  top: 0;
+}
+
+.hiddenboxx{
+  height: 200px;
+  width: 200px;
+  float:left;
+  position: absolute;
+  visibility: hidden;
+  left: 0;
+  top: 0;
 }
 
 .previewbox{
