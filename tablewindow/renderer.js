@@ -57,9 +57,10 @@ var cloudtoggle = true;
 var datadots ={ 
     "nodes": 
     [
-        {"id":"cup1", "fx": width/4, "fy": height/2, "color": "Black"},
-        {"id":"cup2", "fx": 2*(width/4), "fy": height/2, "color":"Black"},
-        {"id":"cup3", "fx": 3*(width/4), "fy": height/2, "color":"Black"}
+        {"id":"cup1", "fx": width/5, "fy": height/2, "color": "Black"},
+        {"id":"cup2", "fx": 2*(width/5), "fy": height/2, "color":"Black"},
+        {"id":"cup3", "fx": 3*(width/5), "fy": height/2, "color":"Black"},
+        {"id":"cup4", "fx": 4*(width/5), "fy": height/2, "color":"Black"},
     ], 
     "links": 
     []
@@ -125,6 +126,9 @@ function update(name,val,cup){
             if(e.source.id === "cup3" && cup===2){
                 e.strength = val;
             }
+            if(e.source.id === "cup4" && cup===3){
+                e.strength = val;
+            }
             checked = true;
         }
 
@@ -148,16 +152,25 @@ function update(name,val,cup){
         datadots.links.push({"source": "cup1", "target": name, "strength":val})
         datadots.links.push({"source": "cup2", "target": name, "strength":0})
         datadots.links.push({"source": "cup3", "target": name, "strength":0})
+        datadots.links.push({"source": "cup4", "target": name, "strength":0})
     }
     if(cup===1){
         datadots.links.push({"source": "cup1", "target": name, "strength":0})
         datadots.links.push({"source": "cup2", "target": name, "strength":val})
         datadots.links.push({"source": "cup3", "target": name, "strength":0})
+        datadots.links.push({"source": "cup4", "target": name, "strength":0})
     }
     if(cup===2){
         datadots.links.push({"source": "cup1", "target": name, "strength":0})
         datadots.links.push({"source": "cup2", "target": name, "strength":0})
         datadots.links.push({"source": "cup3", "target": name, "strength":val})
+        datadots.links.push({"source": "cup4", "target": name, "strength":0})
+    }
+    if(cup===3){
+        datadots.links.push({"source": "cup1", "target": name, "strength":0})
+        datadots.links.push({"source": "cup2", "target": name, "strength":0})
+        datadots.links.push({"source": "cup3", "target": name, "strength":0})
+        datadots.links.push({"source": "cup4", "target": name, "strength":val})
     }
 
 
@@ -336,6 +349,7 @@ var fill = d3.scaleOrdinal(d3.schemeCategory10);
 var data = [];
 var datab = [];
 var datac = [];
+var datad = [];
 
 function calcsize(weight, ltotal){
     // console.log((42 * (weight/total)) + 8)
@@ -413,6 +427,13 @@ setInterval(d=>{
     updatecloud(datac, "cloud3")
 }, 10000);
 
+setInterval(d=>{
+    if(!cloudtoggle){
+        return
+    }
+    updatecloud(datad, "cloud4")
+}, 10000);
+
 
 //https://stackoverflow.com/questions/6121203/how-to-do-fade-in-and-fade-out-with-javascript-and-css
 function fade(element) {
@@ -470,6 +491,10 @@ windowManager.sharedData.watch("cup502", function(prop, action, newValue, oldVal
 
 windowManager.sharedData.watch("cup740", function(prop, action, newValue, oldValue){
     updatetracking(newValue, "cup3", "cup740")
+})
+
+windowManager.sharedData.watch("cup53", function(prop, action, newValue, oldValue){
+    updatetracking(newValue, "cup4", "cup53")
 })
 
 function setweights(data, message){
@@ -609,6 +634,21 @@ windowManager.sharedData.watch("chat740", function(prop, action, newValue, oldVa
     setweights(datac, newValue.message)
 
     writechat("chat740", newValue)
+
+})
+
+windowManager.sharedData.watch("chat53", function(prop, action, newValue, oldValue){
+    update(newValue.name, 1, 3);
+    console.log(newValue)
+    if(emotes.includes(newValue.message)){
+        drawemotes("text53", newValue.message)
+        
+    }
+    updatescrollchat(newValue.message)
+
+    setweights(datad, newValue.message)
+
+    writechat("chat53", newValue)
 
 })
 
