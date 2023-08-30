@@ -57,8 +57,9 @@ var cloudtoggle = true;
 var datadots ={ 
     "nodes": 
     [
-        {"id": "cup1", "fx": width/4, "fy": height/2, "color": "Black"},
-        {"id":"cup2", "fx": 3*(width/4), "fy": height/2, "color":"Black"}
+        {"id":"cup1", "fx": width/4, "fy": height/2, "color": "Black"},
+        {"id":"cup2", "fx": 2*(width/4), "fy": height/2, "color":"Black"},
+        {"id":"cup3", "fx": 3*(width/4), "fy": height/2, "color":"Black"}
     ], 
     "links": 
     []
@@ -115,16 +116,14 @@ function update(name,val,cup){
     checked = false;
     datadots.links.forEach(e=>{
         if(e.target.id === name){
-            if(e.source.id === "cup1"){
-                if(cup===1){
-                    e.strength = val;
-                }
+            if(e.source.id === "cup1" && cup===0){
+                e.strength = val;
             }
-            else{
-                if(cup!==1){
-                    e.strength = val;
-                }
-                
+            if(e.source.id === "cup2" && cup===1){
+                e.strength = val;
+            }
+            if(e.source.id === "cup3" && cup===2){
+                e.strength = val;
             }
             checked = true;
         }
@@ -145,13 +144,20 @@ function update(name,val,cup){
     };
     var localcolor = randomcolor()
     datadots.nodes.push({id:name, color:localcolor})
-    if(cup===1){
+    if(cup===0){
         datadots.links.push({"source": "cup1", "target": name, "strength":val})
         datadots.links.push({"source": "cup2", "target": name, "strength":0})
+        datadots.links.push({"source": "cup3", "target": name, "strength":0})
     }
-    else{
+    if(cup===1){
         datadots.links.push({"source": "cup1", "target": name, "strength":0})
         datadots.links.push({"source": "cup2", "target": name, "strength":val})
+        datadots.links.push({"source": "cup3", "target": name, "strength":0})
+    }
+    if(cup===2){
+        datadots.links.push({"source": "cup1", "target": name, "strength":0})
+        datadots.links.push({"source": "cup2", "target": name, "strength":0})
+        datadots.links.push({"source": "cup3", "target": name, "strength":val})
     }
 
 
@@ -240,17 +246,21 @@ function hide(){
         scrallchat[i].style.visibility = "hidden"
     }
     var bars = document.getElementsByClassName("bars");
-    for(var i = 0; i<clouds.length; i++){
+    for(var i = 0; i<bars.length; i++){
         bars[i].style.visibility = "hidden"
+    }
+    var chats = document.getElementsByClassName("chat");
+    for(var i = 0; i<chats.length; i++){
+        chats[i].style.visibility = "hidden"
+    }
+    var notes = document.getElementsByClassName("notes");
+    for(var i = 0; i<notes.length; i++){
+        notes[i].style.visibility = "hidden"
     }
     emotestoggle = false;
     chatbackgroundtoggle = false;
     cloudtoggle = false;
     document.getElementById("dots").style.visibility = "hidden";
-    document.getElementById("chat502").style.visibility = "hidden";
-    document.getElementById("chat887").style.visibility = "hidden";
-    document.getElementById("chat502notes").style.visibility = "hidden";
-    document.getElementById("chat887notes").style.visibility = "hidden";
 }
 
 document.addEventListener("keydown", (event) => {
@@ -282,13 +292,17 @@ document.addEventListener("keydown", (event) => {
     }
     // if
     if(event.code==="Digit5"){
-        document.getElementById("chat502").style.visibility = "visible";
-        document.getElementById("chat887").style.visibility = "visible";
+        var chats = document.getElementsByClassName("chat");
+        for(var i = 0; i<chats.length; i++){
+            chats[i].style.visibility = "visible"
+        }
     }
 
     if(event.code==="Digit6"){
-        document.getElementById("chat502notes").style.visibility = "visible";
-        document.getElementById("chat887notes").style.visibility = "visible";
+        var notes = document.getElementsByClassName("notes");
+        for(var i = 0; i<notes.length; i++){
+            notes[i].style.visibility = "visible"
+        }
     }
 
     if(event.code==="Digit7"){
@@ -321,18 +335,16 @@ var fill = d3.scaleOrdinal(d3.schemeCategory10);
 // var total = 1;
 var data = [];
 var datab = [];
+var datac = [];
 
 function calcsize(weight, ltotal){
     // console.log((42 * (weight/total)) + 8)
     return ((10 * (weight/ltotal))*4) + 20
 }
 
-setInterval(d=>{
-    if(!cloudtoggle){
-        return
-    }
-    data.sort((a,b)=>{return -(a.count - b.count)});
-    var data2 = data.slice(0, 30);
+function updatecloud(lcdata, cloudid){
+    lcdata.sort((a,b)=>{return -(a.count - b.count)});
+    var data2 = lcdata.slice(0, 30);
     var max = 1;
     var total2 = 0;
     data2.forEach(d=>{
@@ -359,8 +371,8 @@ setInterval(d=>{
     function draw(words) {
     
       console.log(words)
-      document.getElementById("cloud").innerHTML = "";
-      d3.select("#cloud")
+      document.getElementById(cloudid).innerHTML = "";
+      d3.select("#"+ cloudid)
         .attr("width", 300)
         .attr("height", 300)
         .style("animation", "fade 10000ms 0ms infinite")
@@ -378,59 +390,27 @@ setInterval(d=>{
         })
         .text(function(d) { return d.text; });
   }
+}
+
+setInterval(d=>{
+    if(!cloudtoggle){
+        return
+    }
+    updatecloud(data, "cloud")
 }, 10000);
 
 setInterval(d=>{
     if(!cloudtoggle){
         return
     }
-    datab.sort((a,b)=>{return -(a.count - b.count)});
-    var data2 = datab.slice(0, 30);
-    var max = 1;
-    var total2 = 0;
-    data2.forEach(d=>{
-        if(d.count > max){
-            max = d.count;
-        }
-        total2 = total2 + d.count;
-    });
-    // var scale = d3.scalePow([10,50],[1,max]);
-    data2.forEach(d=>{
-        d.weight = calcsize(d.count,total2);
-        // d.weight = scale(d.count);
-    })
-    cloud().size([300, 300])
-      .words(data2.map(function(d) {
-        return {text: d.word, size: d.weight};
-      }))
-      .padding(1) 
-      .rotate(function() { return ~~(Math.random() * 2) * 90; })
-      .fontSize(function(d) { return d.size; })
-      .on("end", draw)
-      .start();
+    updatecloud(datab, "cloud2")
+}, 10000);
 
-    function draw(words) {
-    
-      console.log(words)
-      document.getElementById("cloud2").innerHTML = "";
-      d3.select("#cloud2")
-        .attr("width", 300)
-        .attr("height", 300)
-        .style("animation", "fade 10000ms 0ms infinite")
-      .append("g")
-        .attr("transform", "translate(150,150)")
-      .selectAll("text")
-        .data(words)
-      .enter().append("text")
-        .style("font-size", function(d) { return d.size + "px"; })
-        .style("fill", function(d, i) { return fill(i); })
-        .attr("text-anchor", "middle")
-        .attr("transform", function(d) {
-
-          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-        })
-        .text(function(d) { return d.text; });
-  }
+setInterval(d=>{
+    if(!cloudtoggle){
+        return
+    }
+    updatecloud(datac, "cloud3")
 }, 10000);
 
 
@@ -455,196 +435,46 @@ function setTranslate(xPos, yPos, el) {
     el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
 }
 
-var timestamp = 0;
-windowManager.sharedData.watch("cup887", function(prop, action, newValue, oldValue){
-    var cup = document.getElementById("cup887")
-    let x = newValue.refx - 25;
-    let y = newValue.refy - 25;
-    let time = Date.now();
-    if(time > timestamp + 1000){
-        timestamp = time;
-    }
-    setTranslate(x, y, cup);
-
+function updatetracking(newValue, cupname, cupid ){
     let svgx = ((newValue.refx - 625) * 1.50)+625;
     let svgy = ((newValue.refy-350)*1.5)+350;
+    var cup = document.getElementById(cupid)
+    let x = svgx;
+    let y = svgy;
+    // let time = Date.now();
+    // if(time > timestamp + 1000){
+    //     timestamp = time;
+    // }
+    setTranslate(x, y, cup);
+
+    // let svgx = ((newValue.refx - 625) * 1.50)+625;
+    // let svgy = ((newValue.refy-350)*1.5)+350;
     node.each(d=>{
-        if(d.id === "cup1"){
+        if(d.id === cupname){
             d.fx = svgx;
             d.fy = svgy;
         }
     })
+
+}
+
+var timestamp = 0;
+windowManager.sharedData.watch("cup887", function(prop, action, newValue, oldValue){
+    updatetracking(newValue, "cup1", "cup887")
 })
 
 var timestamp2 = 0;
 windowManager.sharedData.watch("cup502", function(prop, action, newValue, oldValue){
-    var cup = document.getElementById("cup502")
-    let x = newValue.refx - 25;
-    let y = newValue.refy - 25 - (50*1);
-    let time = Date.now();
-    if(time > timestamp2 + 1000){
-        timestamp2 = time;
-    }
-    setTranslate(x, y, cup);
-
-    
-    let svgx = ((newValue.refx - 625) * 1.50)+625;
-    let svgy = ((newValue.refy-350)*1.5)+350;
-    node.each(d=>{
-        if(d.id === "cup1"){
-            d.fx = svgx;
-            d.fy = svgy;
-        }
-    })
+    updatetracking(newValue, "cup2", "cup502")
 })
 
-var palette = ["#F5C1C1", "#FFFAB0", "#CBF2B8", "#DFC5E8", "#BAEEE5"]
-
-windowManager.sharedData.watch("chat887", function(prop, action, newValue, oldValue){
-    console.log(newValue)
-    update(newValue.name, 1, 1);
-    if(emotes.includes(newValue.message)){
-        if(emotestoggle === true){
-            let cup = document.getElementById("text887")
-            // cup.appendChild(el);
-            let div1 = document.createElement("div");
-            var time = 4000+(Math.random()*3000);
-            div1.style.animation = "up "+time+"ms 233ms infinite"
-            div1.style.position = "absolute"
-            var side = -25 + (Math.random()*50);
-            div1.style.transform ="translateX("+side+"%)"
-            let div2 = document.createElement("div");
-            var time2 = 2500+(Math.random()*1000);
-            div2.style.animation = "wobble"+1+" "+time2+"ms 275ms infinite ease-in-out";
-            let img = document.createElement("img");
-            img.src = `../twitchemotes/${newValue.message}.jpg`;
-            img.style.width = "50%"
-            // fade(img)
-            cup.appendChild(div1);
-            div1.appendChild(div2);
-            div2.appendChild(img);
-            var timer = setTimeout(function(){
-                div1.remove();
-            }, time)
-        }
-        
-        
-    }
-
-    var localwords = seperate(newValue.message);
-
-    localwords.forEach(d=>{
-        var found = false;
-        datab.forEach(e=>{
-            if(d===e.word){
-                e.count = e.count +1;
-                e.weight=calcsize(e.count)
-                found = true;
-            }
-        })  
-        if(!found){
-            datab.push({word:d, count:1, weight:calcsize(1)});
-        }  
-
-        datab.forEach(e=>{
-            // if(d===e.word){
-                // e.count = e.count +1;
-            e.weight=calcsize(e.count);
-                // found = true;
-            // }
-        })  
-    })
-
-    let text = document.getElementById("chat887")
-    const child = document.createElement('p');
-    const user = document.createElement('span');
-    user.append(newValue.name + ": ");
-    user.classList.add('username');
-    user.style.color = randomcolor();
-    const message = document.createElement('span');
-    message.append(newValue.message);
-    child.appendChild(user);
-    child.appendChild(message);
-
-    // child.append(newValue.name + ": " + newValue.message)
-    text.appendChild(child);
-
-    console.log("nodes:" + text.childNodes.length)
-    if (text.childNodes.length > 5) {
-        text.removeChild(text.firstChild);
-    }
-
+windowManager.sharedData.watch("cup740", function(prop, action, newValue, oldValue){
+    updatetracking(newValue, "cup3", "cup740")
 })
 
-windowManager.sharedData.watch("chat502", function(prop, action, newValue, oldValue){
-    update(newValue.name, 1, 0);
-    console.log(newValue)
-    if(emotes.includes(newValue.message)){
-        if(emotestoggle === true){
-            let cup = document.getElementById("text502")
-            // cup.appendChild(el);
-            let div1 = document.createElement("div");
-            
-            var time = 4000+(Math.random()*3000);
-            div1.style.animation = "up "+time+"ms 233ms infinite"
-            div1.style.position = "absolute"
-            var side = -25 + (Math.random()*50);
-            div1.style.transform ="translateX("+side+"%)"
-            let div2 = document.createElement("div");
-            var time2 = 2500+(Math.random()*1000);
-            div2.style.animation = "wobble"+1+" "+time2+"ms 275ms infinite ease-in-out";
-            let img = document.createElement("img");
-            img.src = `../twitchemotes/${newValue.message}.jpg`;
-            img.style.width = "50%"
-            // fade(img)
-            cup.appendChild(div1);
-            div1.appendChild(div2);
-            div2.appendChild(img);
-            var timer = setTimeout(function(){
-                div1.remove();
-            }, time)
-        }
-        
-    }
-    if(chatbackgroundtoggle===true){
-        let mainbox = document.getElementById("mainbox");
-        let textbox = document.createElement("div");
-        textbox.className = "scrollchat";
-        textbox.innerHTML = newValue.message;
-        var percent = 100;
-        textbox.style.left = percent+"%";
-        var height = 10+(Math.random()*80)
-        textbox.style.top = height+"%"
-        var size = 14+Math.ceil(Math.random()*16)
-        textbox.style.fontSize = size+"px";
-        var ran = Math.floor(Math.random()*4.9)
-        textbox.style.color = palette[ran]
-        var timer = setInterval(function(){
-            percent = percent - 0.1;
-            textbox.style.left = percent+"%";
-        }, 20)
-        mainbox.appendChild(textbox);
-    }
+function setweights(data, message){
+    var localwords = seperate(message);
 
-
-        // let mainbox = document.getElementById("mainbox");
-        // let textbox = document.createElement("div");
-        // textbox.className = "circletext";
-        // textbox.innerHTML = newValue.message;
-        // var percent = 100;
-        // textbox.style.left = percent+"%";
-        // var height = 10+(Math.random()*80)
-        // textbox.style.top = height+"%"
-        // var size = 14+Math.ceil(Math.random()*16)
-        // textbox.style.fontSize = size+"px";
-        // var timer = setInterval(function(){
-        //     percent = percent - 0.1;
-        //     textbox.style.left = percent+"%";
-        // }, 20)
-        // mainbox.appendChild(textbox);
-
-    var localwords = seperate(newValue.message);
-    
     localwords.forEach(d=>{
         var found = false;
         data.forEach(e=>{
@@ -666,8 +496,10 @@ windowManager.sharedData.watch("chat502", function(prop, action, newValue, oldVa
             // }
         })  
     })
+}
 
-    let text = document.getElementById("chat502")
+function writechat(chatid, newValue){
+    let text = document.getElementById(chatid)
     // text.append(newValue.name + ": " + newValue.message)
     const child = document.createElement('p');
     const user = document.createElement('span');
@@ -685,11 +517,101 @@ windowManager.sharedData.watch("chat502", function(prop, action, newValue, oldVa
     if (text.childNodes.length > 5) {
         text.removeChild(text.firstChild);
     }
+}
 
-        
-     
+function drawemotes(textid, message){
+    if(emotestoggle === true){
+        let cup = document.getElementById(textid)
+        // cup.appendChild(el);
+        let div1 = document.createElement("div");
+        var time = 4000+(Math.random()*3000);
+        div1.style.animation = "up "+time+"ms 233ms infinite"
+        div1.style.position = "absolute"
+        var side = -25 + (Math.random()*50);
+        div1.style.transform ="translateX("+side+"%)"
+        let div2 = document.createElement("div");
+        var time2 = 2500+(Math.random()*1000);
+        div2.style.animation = "wobble"+1+" "+time2+"ms 275ms infinite ease-in-out";
+        let img = document.createElement("img");
+        img.src = `../twitchemotes/${message}.jpg`;
+        img.style.width = "50%"
+        // fade(img)
+        cup.appendChild(div1);
+        div1.appendChild(div2);
+        div2.appendChild(img);
+        var timer = setTimeout(function(){
+            div1.remove();
+        }, time)
+    }
+}
+
+function updatescrollchat(message){
+    if(chatbackgroundtoggle===true){
+        let mainbox = document.getElementById("mainbox");
+        let textbox = document.createElement("div");
+        textbox.className = "scrollchat";
+        textbox.innerHTML = message;
+        var percent = 100;
+        textbox.style.left = percent+"%";
+        var height = 10+(Math.random()*80)
+        textbox.style.top = height+"%"
+        var size = 14+Math.ceil(Math.random()*16)
+        textbox.style.fontSize = size+"px";
+        var ran = Math.floor(Math.random()*4.9)
+        textbox.style.color = palette[ran]
+        var timer = setInterval(function(){
+            percent = percent - 0.1;
+            textbox.style.left = percent+"%";
+        }, 20)
+        mainbox.appendChild(textbox);
+    }
+}
+
+var palette = ["#F5C1C1", "#FFFAB0", "#CBF2B8", "#DFC5E8", "#BAEEE5"]
+
+windowManager.sharedData.watch("chat887", function(prop, action, newValue, oldValue){
+    console.log(newValue)
+    update(newValue.name, 1, 0);
+    if(emotes.includes(newValue.message)){
+        drawemotes("text887", newValue.message) 
+    }
+
+    setweights(datab, newValue.message)
+
+    writechat("chat887", newValue)
 
 })
+
+windowManager.sharedData.watch("chat502", function(prop, action, newValue, oldValue){
+    update(newValue.name, 1, 1);
+    console.log(newValue)
+    if(emotes.includes(newValue.message)){
+        drawemotes("text502", newValue.message)
+        
+    }
+    updatescrollchat(newValue.message)
+
+    setweights(data, newValue.message)
+
+    writechat("chat502", newValue)
+
+})
+
+windowManager.sharedData.watch("chat740", function(prop, action, newValue, oldValue){
+    update(newValue.name, 1, 2);
+    console.log(newValue)
+    if(emotes.includes(newValue.message)){
+        drawemotes("text740", newValue.message)
+        
+    }
+    updatescrollchat(newValue.message)
+
+    setweights(datac, newValue.message)
+
+    writechat("chat740", newValue)
+
+})
+
 
 
 
