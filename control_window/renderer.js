@@ -149,6 +149,11 @@ function tick() {
             let point = VI.getRealPos(VI.workingbox.corners, refpoint, des);
             windowManager.sharedData.set("cup53", { x: point[0], y: point[1], refx: refpoint.x, refy: refpoint.y })
           }
+          if (marker.id == 183) {
+            let refpoint = MP.findcenter(marker.corners)
+            let point = VI.getRealPos(VI.workingbox.corners, refpoint, des);
+            windowManager.sharedData.set("cup183", { x: point[0], y: point[1], refx: refpoint.x, refy: refpoint.y })
+          }
         }
       })
     }

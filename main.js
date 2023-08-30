@@ -7,7 +7,7 @@ const windowManager = require('electron-window-manager');
 const path = require('path')
 var flip = true;
 
-var localchannels = ["jinnytty", "ironmouse", "sinder", "hasanabi"]
+var localchannels = ["jinnytty", "ironmouse", "sinder", "hasanabi", "lirik"]
 
 
 function createWindow() {
@@ -46,10 +46,12 @@ app.whenReady().then(() => {
   windowManager.sharedData.set("cup502", { "x": 0, "y": 0, refx: 0, refy: 0 });
   windowManager.sharedData.set("cup740", { "x": 0, "y": 0, refx: 0, refy: 0 });
   windowManager.sharedData.set("cup53", { "x": 0, "y": 0, refx: 0, refy: 0 });
+  windowManager.sharedData.set("cup183", { "x": 0, "y": 0, refx: 0, refy: 0 });
   windowManager.sharedData.set("chat887", { name: "blah", message: "blah" });
   windowManager.sharedData.set("chat502", { name: "blah", message: "blah" });
   windowManager.sharedData.set("chat740", { name: "blah", message: "blah" });
   windowManager.sharedData.set("chat53", { name: "blah", message: "blah" });
+  windowManager.sharedData.set("chat183", { name: "blah", message: "blah" });
 
   var win = windowManager.createNew("Main", "Control", "file://" + __dirname + "/control_window/index.html",
     false, {
@@ -139,7 +141,10 @@ app.whenReady().then(() => {
       windowManager.sharedData.set("chat53", {name:tags.username, message:message});
       return
     }
-      
+    if(channel===localchannels[4]){
+      windowManager.sharedData.set("chat183", {name:tags.username, message:message});
+      return
+    }
   
     
   
