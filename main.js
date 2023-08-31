@@ -126,31 +126,31 @@ app.whenReady().then(() => {
   client.on('message', (channel, tags, message, self) => {
     // Ignore echoed messages.
     if (self) return;
-    console.log(message);
-    if(channel===localchannels[0]){
-      windowManager.sharedData.set("chat887", {name:tags.username, message:message});
-      return
-    }
-    if(channel===localchannels[1]){
-      windowManager.sharedData.set("chat502", {name:tags.username, message:message});
-      return
-    }
-    if(channel===localchannels[2]){
-      windowManager.sharedData.set("chat740", {name:tags.username, message:message});
-      return
-    }
-    if(channel===localchannels[3]){
-      windowManager.sharedData.set("chat53", {name:tags.username, message:message});
-      return
-    }
-    if(channel===localchannels[4]){
-      windowManager.sharedData.set("chat183", {name:tags.username, message:message});
-      return
-    }
-    if(channel===localchannels[5]){
-      windowManager.sharedData.set("chat990", {name:tags.username, message:message});
-      return
-    }
+    // console.log(message);
+    // if(channel===localchannels[0]){
+    //   windowManager.sharedData.set("chat887", {name:tags.username, message:message});
+    //   return
+    // }
+    // if(channel===localchannels[1]){
+    //   windowManager.sharedData.set("chat502", {name:tags.username, message:message});
+    //   return
+    // }
+    // if(channel===localchannels[2]){
+    //   windowManager.sharedData.set("chat740", {name:tags.username, message:message});
+    //   return
+    // }
+    // if(channel===localchannels[3]){
+    //   windowManager.sharedData.set("chat53", {name:tags.username, message:message});
+    //   return
+    // }
+    // if(channel===localchannels[4]){
+    //   windowManager.sharedData.set("chat183", {name:tags.username, message:message});
+    //   return
+    // }
+    // if(channel===localchannels[5]){
+    //   windowManager.sharedData.set("chat990", {name:tags.username, message:message});
+    //   return
+    // }
   
     
   
@@ -191,43 +191,82 @@ app.on('window-all-closed', function () {
 
 const WebSocket = require('ws');
 
-const wss = new WebSocket.Server({ port: 8080 });
+const ws = new WebSocket("ws://localhost:8080");
+// const wss = new WebSocket.Server({ port: 8080 });
 const clients = new Map();
 
 let poll = false;
 var votesA = 0;
 var votesB = 0;
+var votesC = 0;
+var votesD = 0;
+var votesE = 0;
+var votesF = 0;
 
-wss.on('connection', function connection(ws) {
-  ws.on('message', function message(data) {
-    console.log("type:" + data + " " + typeof (data))
-    var object = JSON.parse(data);
-    console.log('received: ' + object.username);
-    if (object.channel == "a") {
-      windowManager.sharedData.set("chat887", { name: object.username, message: object.content });
-    } else if (object.channel == "b") {
-      windowManager.sharedData.set("chat502", { name: object.username, message: object.content });
-    } else if (poll == true) {
-      if (object.content == "1") {
-        votesA++;
-        console.log("Votes for 1: " + votesA);
-        windowManager.sharedData.set("votesA", { votes: votesA });
-      } else if (object.content == "2") {
-        votesB++;
-        console.log("Votes for 2: " + votesA);
-        windowManager.sharedData.set("votesB", { votes: votesB });
-      }
-    }
 
-    if (object.content == "!poll") {
-      poll = true;
-      console.log("Poll started")
-    }
-  });
+ws.addEventListener("open", () => {
+    console.log("We are connected");
 });
 
-// if message is from mod & is poll -> start poll
-// if message is in general & is a 1, then increment A by 1?
-// if message is in general & is a 2, then increment B by 1
-// on message -> update svg
+ws.addEventListener('message', function (event) {
+  var data = event.data
+  console.log(data)
+  // console.log("type:" + data + " " + typeof (data))
+  var object = JSON.parse(data);
+  console.log('received: ' + object.username);
+  if (object.channel == "a") {
+    if(poll == true){
+      votesA++;
+      windowManager.sharedData.set("votesA", { votes: votesA });
+    }
+    windowManager.sharedData.set("chat887", { name: object.username, message: object.content });
+    
+  } else if (object.channel == "b") {
+    if(poll == true){
+      votesB++;
+      windowManager.sharedData.set("votesB", { votes: votesB });
+    }
+
+    windowManager.sharedData.set("chat502", { name: object.username, message: object.content });
+    
+  } else if (object.channel == "c") {
+    if(poll == true){
+      votesC++;
+      windowManager.sharedData.set("votesC", { votes: votesC });
+    }
+
+    windowManager.sharedData.set("chat740", { name: object.username, message: object.content });
+   
+  } else if (object.channel == "d") {
+    if(poll == true){
+      votesD++;
+      windowManager.sharedData.set("votesD", { votes: votesD });
+    }
+
+    windowManager.sharedData.set("chat53", { name: object.username, message: object.content });
+    
+  } else if (object.channel == "e") {
+    if(poll == true){
+      votesE++;
+      windowManager.sharedData.set("votesE", { votes: votesE });
+    }
+
+    windowManager.sharedData.set("chat183", { name: object.username, message: object.content });
+    
+  } else if (object.channel == "f") {
+    if(poll == true){
+      votesF++;
+      windowManager.sharedData.set("votesF", { votes: votesF });
+    }
+
+    windowManager.sharedData.set("chat990", { name: object.username, message: object.content });
+    
+  } 
+
+
+  if (object.content == "!poll") {
+    poll = true;
+    console.log("Poll started")
+  }
+});
 
