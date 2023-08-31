@@ -1,6 +1,9 @@
 votesA = [0];
 votesB = [0];
 votesC = [0];
+votesD = [0];
+votesE = [0];
+votesF = [0];
 
 width = 500;
 height = 70;
@@ -63,115 +66,6 @@ function makebar(votesArr, aID){
     svgA.node()
 }
 
-makebar(votesA, "A")
-makebar(votesB, "B")
-makebar(votesC, "C")
-
-// // Object A
-// var svgA = d3.select("#barA")
-// .attr("width", width)
-// .attr("height", height)
-// .attr('viewBox', [0, 0, width, height]);
-
-// // full grey bar 
-// svgA.append('g')
-//     .attr('fill', 'grey')
-//     .selectAll('rect')
-//     .data(votesA)
-//     .enter().append("rect")
-//     .attr('x', 0)
-//     .attr('y', 0)
-//     .attr('height', y.bandwidth)
-//     .attr('width', width)
-
-// // blue bar
-// svgA.append('g')
-//     .attr('fill', 'royalblue')
-//     .attr("id", "rectA")
-//     .selectAll('rect')
-//     .data(votesA)
-//     .enter().append("rect")
-//     .attr('x', 0)
-//     .attr('y', 0)
-//     .attr('height', y.bandwidth())
-//     .attr('width', (votesA[0] / total) * width)
-
-// svgA.select("#rectA") // adding the text labels to the bar
-//     .data(votesA)
-//     .enter().append("text")
-//     .attr("id", "textB")
-//     .attr("x", 465)
-//     .attr("y", 35) // y position of the text inside bar
-//     .attr("dx", -3) // padding-right
-//     .attr("dy", ".35em") // vertical-align: middle
-//     .attr("text-anchor", "end") // text-align: right
-//     .attr("fill", "white")
-//     .attr("font-size", "20px")
-//     .text("0% (0)");
-
-// svgA.node()
-
-// var svgB = d3.select("#barB")
-//     .attr("width", width)
-//     .attr("height", height)
-//     .attr('viewBox', [0, 0, width, height]);
-
-// // full grey bar 
-// svgB.append('g')
-//     .attr('fill', 'grey')
-//     .selectAll('rect')
-//     .data(votesB)
-//     .enter().append("rect")
-//     .attr('x', 0)
-//     .attr('y', 0)
-//     .attr('height', y.bandwidth)
-//     .attr('width', width)
-
-// // blue bar
-// svgB.append('g')
-//     .attr('fill', 'royalblue')
-//     .attr("id", "rectB")
-//     .selectAll('rect')
-//     .data(votesB)
-//     .enter().append("rect")
-//     .attr('x', 0)
-//     .attr('y', 0)
-//     .attr('height', y.bandwidth())
-//     .attr('width', (votesB[0] / total) * width)
-
-// svgB.select("#rectB") // adding the text labels to the bar
-//     .data(votesB)
-//     .enter().append("text")
-//     .attr("id", "textB")
-//     .attr("x", 465)
-//     .attr("y", 35) // y position of the text inside bar
-//     .attr("dx", -3) // padding-right
-//     .attr("dy", ".35em") // vertical-align: middle
-//     .attr("text-anchor", "end") // text-align: right
-//     .attr("fill", "white")
-//     .attr("font-size", "20px")
-//     .text("0% (0)");
-
-// svgB.node()
-
-// update votes for object A
-windowManager.sharedData.watch("votesA", function (prop, action, newValue, oldValue) {
-    console.log("A: " + newValue.votes);
-    votesA[0]++;
-    total++;
-    updateBar("A", votesA);
-    updateBar("B", votesB)
-})
-
-// update votes for object B
-windowManager.sharedData.watch("votesB", function (prop, action, newValue, oldValue) {
-    console.log("B: " + newValue.votes);
-    votesB[0]++;
-    total++;
-    updateBar("A", votesA);
-    updateBar("B", votesB)
-})
-
 function updateBar(object, votes) {
     var rects = d3.select("#rect" + object)
         .selectAll("rect")
@@ -224,3 +118,90 @@ function updateBar(object, votes) {
 
 
 }
+
+makebar(votesA, "A")
+makebar(votesB, "B")
+makebar(votesC, "C")
+makebar(votesD, "D")
+makebar(votesE, "E")
+makebar(votesF, "F")
+
+// update votes for object A
+windowManager.sharedData.watch("votesA", function (prop, action, newValue, oldValue) {
+    console.log("A: " + newValue.votes);
+    votesA[0]++;
+    total++;
+    updateBar("A", votesA);
+    updateBar("B", votesB);
+    updateBar("C", votesC);
+    updateBar("D", votesD);
+    updateBar("E", votesE);
+    updateBar("F", votesF);
+})
+
+// update votes for object B
+windowManager.sharedData.watch("votesB", function (prop, action, newValue, oldValue) {
+    console.log("B: " + newValue.votes);
+    votesB[0]++;
+    total++;
+    updateBar("A", votesA);
+    updateBar("B", votesB);
+    updateBar("C", votesC);
+    updateBar("D", votesD);
+    updateBar("E", votesE);
+    updateBar("F", votesF);
+})
+
+// update votes for object B
+windowManager.sharedData.watch("votesC", function (prop, action, newValue, oldValue) {
+    console.log("C: " + newValue.votes);
+    votesC[0]++;
+    total++;
+    updateBar("A", votesA);
+    updateBar("B", votesB);
+    updateBar("C", votesC);
+    updateBar("D", votesD);
+    updateBar("E", votesE);
+    updateBar("F", votesF);
+})
+
+// update votes for object B
+windowManager.sharedData.watch("votesD", function (prop, action, newValue, oldValue) {
+    console.log("D: " + newValue.votes);
+    votesD[0]++;
+    total++;
+    updateBar("A", votesA);
+    updateBar("B", votesB);
+    updateBar("C", votesC);
+    updateBar("D", votesD);
+    updateBar("E", votesE);
+    updateBar("F", votesF);
+})
+
+// update votes for object B
+windowManager.sharedData.watch("votesE", function (prop, action, newValue, oldValue) {
+    console.log("E: " + newValue.votes);
+    votesE[0]++;
+    total++;
+    updateBar("A", votesA);
+    updateBar("B", votesB);
+    updateBar("C", votesC);
+    updateBar("D", votesD);
+    updateBar("E", votesE);
+    updateBar("F", votesF);
+})
+
+// update votes for object B
+windowManager.sharedData.watch("votesF", function (prop, action, newValue, oldValue) {
+    console.log("F: " + newValue.votes);
+    votesF[0]++;
+    total++;
+    updateBar("A", votesA);
+    updateBar("B", votesB);
+    updateBar("C", votesC);
+    updateBar("D", votesD);
+    updateBar("E", votesE);
+    updateBar("F", votesF);
+})
+
+

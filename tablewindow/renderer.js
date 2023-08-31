@@ -61,7 +61,8 @@ var datadots ={
         {"id":"cup2", "fx": 2*(width/4), "fy": height/3, "color":"Black"},
         {"id":"cup3", "fx": 3*(width/4), "fy": height/3, "color":"Black"},
         {"id":"cup4", "fx": (width/4), "fy": 2*(height/3), "color":"Black"},
-        {"id":"cup5", "fx": (width/4), "fy": 2*(height/3), "color":"Black"},
+        {"id":"cup5", "fx": 2*(width/4), "fy": 2*(height/3), "color":"Black"},
+        {"id":"cup6", "fx": 3*(width/4), "fy": 2*(height/3), "color":"Black"},
     ], 
     "links": 
     []
@@ -133,6 +134,9 @@ function update(name,val,cup){
             if(e.source.id === "cup5" && cup===4){
                 e.strength = val;
             }
+            if(e.source.id === "cup6" && cup===5){
+                e.strength = val;
+            }
             checked = true;
         }
 
@@ -158,6 +162,7 @@ function update(name,val,cup){
         datadots.links.push({"source": "cup3", "target": name, "strength":0})
         datadots.links.push({"source": "cup4", "target": name, "strength":0})
         datadots.links.push({"source": "cup5", "target": name, "strength":0})
+        datadots.links.push({"source": "cup6", "target": name, "strength":0})
     }
     if(cup===1){
         datadots.links.push({"source": "cup1", "target": name, "strength":0})
@@ -165,6 +170,7 @@ function update(name,val,cup){
         datadots.links.push({"source": "cup3", "target": name, "strength":0})
         datadots.links.push({"source": "cup4", "target": name, "strength":0})
         datadots.links.push({"source": "cup5", "target": name, "strength":0})
+        datadots.links.push({"source": "cup6", "target": name, "strength":0})
     }
     if(cup===2){
         datadots.links.push({"source": "cup1", "target": name, "strength":0})
@@ -172,6 +178,7 @@ function update(name,val,cup){
         datadots.links.push({"source": "cup3", "target": name, "strength":val})
         datadots.links.push({"source": "cup4", "target": name, "strength":0})
         datadots.links.push({"source": "cup5", "target": name, "strength":0})
+        datadots.links.push({"source": "cup6", "target": name, "strength":0})
     }
     if(cup===3){
         datadots.links.push({"source": "cup1", "target": name, "strength":0})
@@ -179,6 +186,7 @@ function update(name,val,cup){
         datadots.links.push({"source": "cup3", "target": name, "strength":0})
         datadots.links.push({"source": "cup4", "target": name, "strength":val})
         datadots.links.push({"source": "cup5", "target": name, "strength":0})
+        datadots.links.push({"source": "cup6", "target": name, "strength":0})
     }
     if(cup===4){
         datadots.links.push({"source": "cup1", "target": name, "strength":0})
@@ -186,6 +194,15 @@ function update(name,val,cup){
         datadots.links.push({"source": "cup3", "target": name, "strength":0})
         datadots.links.push({"source": "cup4", "target": name, "strength":0})
         datadots.links.push({"source": "cup5", "target": name, "strength":val})
+        datadots.links.push({"source": "cup6", "target": name, "strength":0})
+    }
+    if(cup===5){
+        datadots.links.push({"source": "cup1", "target": name, "strength":0})
+        datadots.links.push({"source": "cup2", "target": name, "strength":0})
+        datadots.links.push({"source": "cup3", "target": name, "strength":0})
+        datadots.links.push({"source": "cup4", "target": name, "strength":0})
+        datadots.links.push({"source": "cup5", "target": name, "strength":0})
+        datadots.links.push({"source": "cup6", "target": name, "strength":val})
     }
 
 
@@ -366,6 +383,7 @@ var datab = [];
 var datac = [];
 var datad = [];
 var datae = [];
+var dataf = [];
 
 function calcsize(weight, ltotal){
     // console.log((42 * (weight/total)) + 8)
@@ -457,6 +475,13 @@ setInterval(d=>{
     updatecloud(datae, "cloud5")
 }, 10000);
 
+setInterval(d=>{
+    if(!cloudtoggle){
+        return
+    }
+    updatecloud(dataf, "cloud6")
+}, 10000);
+
 
 //https://stackoverflow.com/questions/6121203/how-to-do-fade-in-and-fade-out-with-javascript-and-css
 function fade(element) {
@@ -522,6 +547,10 @@ windowManager.sharedData.watch("cup53", function(prop, action, newValue, oldValu
 
 windowManager.sharedData.watch("cup183", function(prop, action, newValue, oldValue){
     updatetracking(newValue, "cup5", "cup183")
+})
+
+windowManager.sharedData.watch("cup990", function(prop, action, newValue, oldValue){
+    updatetracking(newValue, "cup6", "cup990")
 })
 
 function setweights(data, message){
@@ -641,7 +670,7 @@ windowManager.sharedData.watch("chat502", function(prop, action, newValue, oldVa
         drawemotes("text502", newValue.message)
         
     }
-    updatescrollchat(newValue.message)
+    // updatescrollchat(newValue.message)
 
     setweights(data, newValue.message)
 
@@ -656,7 +685,7 @@ windowManager.sharedData.watch("chat740", function(prop, action, newValue, oldVa
         drawemotes("text740", newValue.message)
         
     }
-    updatescrollchat(newValue.message)
+    // updatescrollchat(newValue.message)
 
     setweights(datac, newValue.message)
 
@@ -686,11 +715,26 @@ windowManager.sharedData.watch("chat183", function(prop, action, newValue, oldVa
         drawemotes("text183", newValue.message)
         
     }
-    updatescrollchat(newValue.message)
+    // updatescrollchat(newValue.message)
 
     setweights(datae, newValue.message)
 
     writechat("chat183", newValue)
+
+})
+
+windowManager.sharedData.watch("chat990", function(prop, action, newValue, oldValue){
+    update(newValue.name, 1, 5);
+    console.log(newValue)
+    if(emotes.includes(newValue.message)){
+        drawemotes("text990", newValue.message)
+        
+    }
+    // updatescrollchat(newValue.message)
+
+    setweights(dataf, newValue.message)
+
+    writechat("chat990", newValue)
 
 })
 
