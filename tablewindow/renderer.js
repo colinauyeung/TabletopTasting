@@ -54,55 +54,55 @@ var emotestoggle = true;
 var chatbackgroundtoggle = true;
 var cloudtoggle = true;
 
-var datadots ={ 
-    "nodes": 
-    [
-        {"id":"cup1", "fx": width/4, "fy": height/3, "color": "Black"},
-        {"id":"cup2", "fx": 2*(width/4), "fy": height/3, "color":"Black"},
-        {"id":"cup3", "fx": 3*(width/4), "fy": height/3, "color":"Black"},
-        {"id":"cup4", "fx": (width/4), "fy": 2*(height/3), "color":"Black"},
-        {"id":"cup5", "fx": 2*(width/4), "fy": 2*(height/3), "color":"Black"},
-        {"id":"cup6", "fx": 3*(width/4), "fy": 2*(height/3), "color":"Black"},
-    ], 
-    "links": 
-    []
-}
+// var datadots ={ 
+//     "nodes": 
+//     [
+//         {"id":"cup1", "fx": width/4, "fy": height/3, "color": "Black"},
+//         {"id":"cup2", "fx": 2*(width/4), "fy": height/3, "color":"Black"},
+//         {"id":"cup3", "fx": 3*(width/4), "fy": height/3, "color":"Black"},
+//         {"id":"cup4", "fx": (width/4), "fy": 2*(height/3), "color":"Black"},
+//         {"id":"cup5", "fx": 2*(width/4), "fy": 2*(height/3), "color":"Black"},
+//         {"id":"cup6", "fx": 3*(width/4), "fy": 2*(height/3), "color":"Black"},
+//     ], 
+//     "links": 
+//     []
+// }
 
-var svgdots = d3.select("#dots")
-.attr("width",width)
-.attr("height",height);
+// var svgdots = d3.select("#dots")
+// .attr("width",width)
+// .attr("height",height);
 
-var simulation = d3.forceSimulation()
-    .force("link", d3.forceLink().id(function(d) { return d.id; }).strength(d=>d.strength))
-    .force("charge", d3.forceManyBody().strength(-100))
-    .force("boundary", forceBoundary(20, 20, width-20, height-20).border(10).strength(0.001));
+// var simulation = d3.forceSimulation()
+//     .force("link", d3.forceLink().id(function(d) { return d.id; }).strength(d=>d.strength))
+//     .force("charge", d3.forceManyBody().strength(-100))
+//     .force("boundary", forceBoundary(20, 20, width-20, height-20).border(10).strength(0.001));
 
-var linkcontainer = svgdots.append("g").selectAll("line")  
+// var linkcontainer = svgdots.append("g").selectAll("line")  
 
-var link = linkcontainer
-.data(datadots.links)
-.enter().append("line")
-.attr("stroke","white");
+// var link = linkcontainer
+// .data(datadots.links)
+// .enter().append("line")
+// .attr("stroke","white");
 
-var nodecontainer = svgdots.append("g").selectAll("circle")
+// var nodecontainer = svgdots.append("g").selectAll("circle")
 
-let node = nodecontainer
-.data(datadots.nodes, d=>{return d.id})
-.enter().append("circle")
-.attr("r", 5)
-.attr("fill", d=>d.color)
-.call(d3.drag()
-.on("start", dragstarted)
-.on("drag", dragged)
-.on("end", dragended));
+// let node = nodecontainer
+// .data(datadots.nodes, d=>{return d.id})
+// .enter().append("circle")
+// .attr("r", 5)
+// .attr("fill", d=>d.color)
+// .call(d3.drag()
+// .on("start", dragstarted)
+// .on("drag", dragged)
+// .on("end", dragended));
 
-simulation
-.nodes(datadots.nodes)
-.on("tick", ticked)
-.alphaDecay(0);
+// simulation
+// .nodes(datadots.nodes)
+// .on("tick", ticked)
+// .alphaDecay(0);
 
-simulation.force("link")
-.links(datadots.links);
+// simulation.force("link")
+// .links(datadots.links);
 
 function decay(){
 datadots.links.forEach(i=>{
@@ -116,161 +116,161 @@ simulation.force("link")
 
 let checked = false;
 function update(name,val,cup){
-    checked = false;
-    datadots.links.forEach(e=>{
-        if(e.target.id === name){
-            if(e.source.id === "cup1" && cup===0){
-                e.strength = val;
-            }
-            if(e.source.id === "cup2" && cup===1){
-                e.strength = val;
-            }
-            if(e.source.id === "cup3" && cup===2){
-                e.strength = val;
-            }
-            if(e.source.id === "cup4" && cup===3){
-                e.strength = val;
-            }
-            if(e.source.id === "cup5" && cup===4){
-                e.strength = val;
-            }
-            if(e.source.id === "cup6" && cup===5){
-                e.strength = val;
-            }
-            checked = true;
-        }
+    // checked = false;
+    // datadots.links.forEach(e=>{
+    //     if(e.target.id === name){
+    //         if(e.source.id === "cup1" && cup===0){
+    //             e.strength = val;
+    //         }
+    //         if(e.source.id === "cup2" && cup===1){
+    //             e.strength = val;
+    //         }
+    //         if(e.source.id === "cup3" && cup===2){
+    //             e.strength = val;
+    //         }
+    //         if(e.source.id === "cup4" && cup===3){
+    //             e.strength = val;
+    //         }
+    //         if(e.source.id === "cup5" && cup===4){
+    //             e.strength = val;
+    //         }
+    //         if(e.source.id === "cup6" && cup===5){
+    //             e.strength = val;
+    //         }
+    //         checked = true;
+    //     }
 
 
-    })
-    if(checked){
-        simulation
-        .nodes(datadots.nodes)
-        .on("tick", ticked)
-        .alphaDecay(0);
+    // })
+    // if(checked){
+    //     simulation
+    //     .nodes(datadots.nodes)
+    //     .on("tick", ticked)
+    //     .alphaDecay(0);
     
 
-        simulation.force("link")
-        .links(datadots.links);
-        checked = true;
-        return;
-    };
-    var localcolor = randomcolor()
-    datadots.nodes.push({id:name, color:localcolor})
-    if(cup===0){
-        datadots.links.push({"source": "cup1", "target": name, "strength":val})
-        datadots.links.push({"source": "cup2", "target": name, "strength":0})
-        datadots.links.push({"source": "cup3", "target": name, "strength":0})
-        datadots.links.push({"source": "cup4", "target": name, "strength":0})
-        datadots.links.push({"source": "cup5", "target": name, "strength":0})
-        datadots.links.push({"source": "cup6", "target": name, "strength":0})
-    }
-    if(cup===1){
-        datadots.links.push({"source": "cup1", "target": name, "strength":0})
-        datadots.links.push({"source": "cup2", "target": name, "strength":val})
-        datadots.links.push({"source": "cup3", "target": name, "strength":0})
-        datadots.links.push({"source": "cup4", "target": name, "strength":0})
-        datadots.links.push({"source": "cup5", "target": name, "strength":0})
-        datadots.links.push({"source": "cup6", "target": name, "strength":0})
-    }
-    if(cup===2){
-        datadots.links.push({"source": "cup1", "target": name, "strength":0})
-        datadots.links.push({"source": "cup2", "target": name, "strength":0})
-        datadots.links.push({"source": "cup3", "target": name, "strength":val})
-        datadots.links.push({"source": "cup4", "target": name, "strength":0})
-        datadots.links.push({"source": "cup5", "target": name, "strength":0})
-        datadots.links.push({"source": "cup6", "target": name, "strength":0})
-    }
-    if(cup===3){
-        datadots.links.push({"source": "cup1", "target": name, "strength":0})
-        datadots.links.push({"source": "cup2", "target": name, "strength":0})
-        datadots.links.push({"source": "cup3", "target": name, "strength":0})
-        datadots.links.push({"source": "cup4", "target": name, "strength":val})
-        datadots.links.push({"source": "cup5", "target": name, "strength":0})
-        datadots.links.push({"source": "cup6", "target": name, "strength":0})
-    }
-    if(cup===4){
-        datadots.links.push({"source": "cup1", "target": name, "strength":0})
-        datadots.links.push({"source": "cup2", "target": name, "strength":0})
-        datadots.links.push({"source": "cup3", "target": name, "strength":0})
-        datadots.links.push({"source": "cup4", "target": name, "strength":0})
-        datadots.links.push({"source": "cup5", "target": name, "strength":val})
-        datadots.links.push({"source": "cup6", "target": name, "strength":0})
-    }
-    if(cup===5){
-        datadots.links.push({"source": "cup1", "target": name, "strength":0})
-        datadots.links.push({"source": "cup2", "target": name, "strength":0})
-        datadots.links.push({"source": "cup3", "target": name, "strength":0})
-        datadots.links.push({"source": "cup4", "target": name, "strength":0})
-        datadots.links.push({"source": "cup5", "target": name, "strength":0})
-        datadots.links.push({"source": "cup6", "target": name, "strength":val})
-    }
+    //     simulation.force("link")
+    //     .links(datadots.links);
+    //     checked = true;
+    //     return;
+    // };
+    // var localcolor = randomcolor()
+    // datadots.nodes.push({id:name, color:localcolor})
+    // if(cup===0){
+    //     datadots.links.push({"source": "cup1", "target": name, "strength":val})
+    //     datadots.links.push({"source": "cup2", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup3", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup4", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup5", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup6", "target": name, "strength":0})
+    // }
+    // if(cup===1){
+    //     datadots.links.push({"source": "cup1", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup2", "target": name, "strength":val})
+    //     datadots.links.push({"source": "cup3", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup4", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup5", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup6", "target": name, "strength":0})
+    // }
+    // if(cup===2){
+    //     datadots.links.push({"source": "cup1", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup2", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup3", "target": name, "strength":val})
+    //     datadots.links.push({"source": "cup4", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup5", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup6", "target": name, "strength":0})
+    // }
+    // if(cup===3){
+    //     datadots.links.push({"source": "cup1", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup2", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup3", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup4", "target": name, "strength":val})
+    //     datadots.links.push({"source": "cup5", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup6", "target": name, "strength":0})
+    // }
+    // if(cup===4){
+    //     datadots.links.push({"source": "cup1", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup2", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup3", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup4", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup5", "target": name, "strength":val})
+    //     datadots.links.push({"source": "cup6", "target": name, "strength":0})
+    // }
+    // if(cup===5){
+    //     datadots.links.push({"source": "cup1", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup2", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup3", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup4", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup5", "target": name, "strength":0})
+    //     datadots.links.push({"source": "cup6", "target": name, "strength":val})
+    // }
 
 
-    svgdots.selectAll("circle").remove()
-    svgdots.selectAll("line").remove()
+    // svgdots.selectAll("circle").remove()
+    // svgdots.selectAll("line").remove()
     
-    node = nodecontainer
-    .data(datadots.nodes, d=>{return d.id})
-    .enter().append("circle")
-    .attr("r", 5)
-    .attr("fill", d=>d.color)
-    .call(d3.drag()
-    .on("start", dragstarted)
-    .on("drag", dragged)
-    .on("end", dragended));
+    // node = nodecontainer
+    // .data(datadots.nodes, d=>{return d.id})
+    // .enter().append("circle")
+    // .attr("r", 5)
+    // .attr("fill", d=>d.color)
+    // .call(d3.drag()
+    // .on("start", dragstarted)
+    // .on("drag", dragged)
+    // .on("end", dragended));
 
-    link = linkcontainer
-    .data(datadots.links)
-    .enter().append("line")
-    .attr("stroke","white")
-    .attr("opacity", "0");
+    // link = linkcontainer
+    // .data(datadots.links)
+    // .enter().append("line")
+    // .attr("stroke","white")
+    // .attr("opacity", "0");
 
-    // node = node.merge(newnode)
+    // // node = node.merge(newnode)
 
-    simulation
-    .nodes(datadots.nodes)
-    .on("tick", ticked)
-    .alphaDecay(0);
+    // simulation
+    // .nodes(datadots.nodes)
+    // .on("tick", ticked)
+    // .alphaDecay(0);
 
 
-    simulation.force("link")
-    .links(datadots.links);
+    // simulation.force("link")
+    // .links(datadots.links);
 }
 
     
-function ticked() {
-link
-.attr("x1", function(d) { return d.source.x; })
-.attr("y1", function(d) { return d.source.y; })
-.attr("x2", function(d) { return d.target.x; })
-.attr("y2", function(d) { return d.target.y; });
-node
-.attr("cx", function(d) { return d.x; })
-.attr("cy", function(d) { return d.y; });
-}    
+// function ticked() {
+// link
+// .attr("x1", function(d) { return d.source.x; })
+// .attr("y1", function(d) { return d.source.y; })
+// .attr("x2", function(d) { return d.target.x; })
+// .attr("y2", function(d) { return d.target.y; });
+// node
+// .attr("cx", function(d) { return d.x; })
+// .attr("cy", function(d) { return d.y; });
+// }    
     
-// Reheat the simulation when drag starts, and fix the subject position.
-function dragstarted(event) {
-if (!event.active) simulation.alphaTarget(0.3).restart();
-event.fx = d3.event.x;
-event.fy = d3.event.y;
-}
+// // Reheat the simulation when drag starts, and fix the subject position.
+// function dragstarted(event) {
+// if (!event.active) simulation.alphaTarget(0.3).restart();
+// event.fx = d3.event.x;
+// event.fy = d3.event.y;
+// }
 
-// Update the subject (dragged node) position during drag.
-function dragged(event) {
-event.fx = d3.event.x;
-event.fy = d3.event.y;
-}
+// // Update the subject (dragged node) position during drag.
+// function dragged(event) {
+// event.fx = d3.event.x;
+// event.fy = d3.event.y;
+// }
 
-// Restore the target alpha so the simulation cools after dragging ends.
-// Unfix the subject position now that it’s no longer being dragged.
-function dragended(event) {
-if (!event.active) simulation.alphaTarget(0);
-event.fx = null;
-event.fy  = null;
-}
+// // Restore the target alpha so the simulation cools after dragging ends.
+// // Unfix the subject position now that it’s no longer being dragged.
+// function dragended(event) {
+// if (!event.active) simulation.alphaTarget(0);
+// event.fx = null;
+// event.fy  = null;
+// }
 
-let timer = setInterval(decay, 500);
+// let timer = setInterval(decay, 500);
 
 const colorsdots = ["Blue", "BlueViolet", "Coral", "Chartreuse", "DarkGreen", 
 "DarkGoldenRod", "Crimson","Orange", "Gold", "PowderBlue", "Peru", "Pink", "Plum",
@@ -390,97 +390,97 @@ function calcsize(weight, ltotal){
     return ((10 * (weight/ltotal))*4) + 20
 }
 
-function updatecloud(lcdata, cloudid){
-    lcdata.sort((a,b)=>{return -(a.count - b.count)});
-    var data2 = lcdata.slice(0, 30);
-    var max = 1;
-    var total2 = 0;
-    data2.forEach(d=>{
-        if(d.count > max){
-            max = d.count;
-        }
-        total2 = total2 + d.count;
-    });
-    // var scale = d3.scalePow([10,50],[1,max]);
-    data2.forEach(d=>{
-        d.weight = calcsize(d.count,total2);
-        // d.weight = scale(d.count);
-    })
-    cloud().size([300, 300])
-      .words(data2.map(function(d) {
-        return {text: d.word, size: d.weight};
-      }))
-      .padding(1) 
-      .rotate(function() { return ~~(Math.random() * 2) * 90; })
-      .fontSize(function(d) { return d.size; })
-      .on("end", draw)
-      .start();
+// function updatecloud(lcdata, cloudid){
+//     lcdata.sort((a,b)=>{return -(a.count - b.count)});
+//     var data2 = lcdata.slice(0, 30);
+//     var max = 1;
+//     var total2 = 0;
+//     data2.forEach(d=>{
+//         if(d.count > max){
+//             max = d.count;
+//         }
+//         total2 = total2 + d.count;
+//     });
+//     // var scale = d3.scalePow([10,50],[1,max]);
+//     data2.forEach(d=>{
+//         d.weight = calcsize(d.count,total2);
+//         // d.weight = scale(d.count);
+//     })
+//     cloud().size([300, 300])
+//       .words(data2.map(function(d) {
+//         return {text: d.word, size: d.weight};
+//       }))
+//       .padding(1) 
+//       .rotate(function() { return ~~(Math.random() * 2) * 90; })
+//       .fontSize(function(d) { return d.size; })
+//       .on("end", draw)
+//       .start();
 
-    function draw(words) {
+//     function draw(words) {
     
-      console.log(words)
-      document.getElementById(cloudid).innerHTML = "";
-      d3.select("#"+ cloudid)
-        .attr("width", 300)
-        .attr("height", 300)
-        .style("animation", "fade 10000ms 0ms infinite")
-      .append("g")
-        .attr("transform", "translate(150,150)")
-      .selectAll("text")
-        .data(words)
-      .enter().append("text")
-        .style("font-size", function(d) { return d.size + "px"; })
-        .style("fill", function(d, i) { return fill(i); })
-        .attr("text-anchor", "middle")
-        .attr("transform", function(d) {
+//       console.log(words)
+//       document.getElementById(cloudid).innerHTML = "";
+//       d3.select("#"+ cloudid)
+//         .attr("width", 300)
+//         .attr("height", 300)
+//         .style("animation", "fade 10000ms 0ms infinite")
+//       .append("g")
+//         .attr("transform", "translate(150,150)")
+//       .selectAll("text")
+//         .data(words)
+//       .enter().append("text")
+//         .style("font-size", function(d) { return d.size + "px"; })
+//         .style("fill", function(d, i) { return fill(i); })
+//         .attr("text-anchor", "middle")
+//         .attr("transform", function(d) {
 
-          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-        })
-        .text(function(d) { return d.text; });
-  }
-}
+//           return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+//         })
+//         .text(function(d) { return d.text; });
+//   }
+// }
 
-setInterval(d=>{
-    if(!cloudtoggle){
-        return
-    }
-    updatecloud(data, "cloud")
-}, 10000);
+// setInterval(d=>{
+//     if(!cloudtoggle){
+//         return
+//     }
+//     updatecloud(data, "cloud")
+// }, 10000);
 
-setInterval(d=>{
-    if(!cloudtoggle){
-        return
-    }
-    updatecloud(datab, "cloud2")
-}, 10000);
+// setInterval(d=>{
+//     if(!cloudtoggle){
+//         return
+//     }
+//     updatecloud(datab, "cloud2")
+// }, 10000);
 
-setInterval(d=>{
-    if(!cloudtoggle){
-        return
-    }
-    updatecloud(datac, "cloud3")
-}, 10000);
+// setInterval(d=>{
+//     if(!cloudtoggle){
+//         return
+//     }
+//     updatecloud(datac, "cloud3")
+// }, 10000);
 
-setInterval(d=>{
-    if(!cloudtoggle){
-        return
-    }
-    updatecloud(datad, "cloud4")
-}, 10000);
+// setInterval(d=>{
+//     if(!cloudtoggle){
+//         return
+//     }
+//     updatecloud(datad, "cloud4")
+// }, 10000);
 
-setInterval(d=>{
-    if(!cloudtoggle){
-        return
-    }
-    updatecloud(datae, "cloud5")
-}, 10000);
+// setInterval(d=>{
+//     if(!cloudtoggle){
+//         return
+//     }
+//     updatecloud(datae, "cloud5")
+// }, 10000);
 
-setInterval(d=>{
-    if(!cloudtoggle){
-        return
-    }
-    updatecloud(dataf, "cloud6")
-}, 10000);
+// setInterval(d=>{
+//     if(!cloudtoggle){
+//         return
+//     }
+//     updatecloud(dataf, "cloud6")
+// }, 10000);
 
 
 //https://stackoverflow.com/questions/6121203/how-to-do-fade-in-and-fade-out-with-javascript-and-css
@@ -657,6 +657,8 @@ windowManager.sharedData.watch("chat887", function(prop, action, newValue, oldVa
         drawemotes("text887", newValue.message) 
     }
 
+    updatescrollchat(newValue.message)
+
     setweights(datab, newValue.message)
 
     writechat("chat887", newValue)
@@ -700,7 +702,7 @@ windowManager.sharedData.watch("chat53", function(prop, action, newValue, oldVal
         drawemotes("text53", newValue.message)
         
     }
-    updatescrollchat(newValue.message)
+    // updatescrollchat(newValue.message)
 
     setweights(datad, newValue.message)
 
