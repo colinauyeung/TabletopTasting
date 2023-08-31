@@ -198,6 +198,10 @@ const clients = new Map();
 let poll = false;
 var votesA = 0;
 var votesB = 0;
+var votesC = 0;
+var votesD = 0;
+var votesE = 0;
+var votesF = 0;
 
 
 ws.addEventListener("open", () => {
@@ -211,28 +215,65 @@ ws.addEventListener('message', function (event) {
   var object = JSON.parse(data);
   console.log('received: ' + object.username);
   if (object.channel == "a") {
-    windowManager.sharedData.set("chat887", { name: object.username, message: object.content });
-  } else if (object.channel == "b") {
-    windowManager.sharedData.set("chat502", { name: object.username, message: object.content });
-  } else if (object.channel == "c") {
-    windowManager.sharedData.set("chat740", { name: object.username, message: object.content });
-  } else if (object.channel == "d") {
-    windowManager.sharedData.set("chat53", { name: object.username, message: object.content });
-  } else if (object.channel == "e") {
-    windowManager.sharedData.set("chat183", { name: object.username, message: object.content });
-  } else if (object.channel == "f") {
-    windowManager.sharedData.set("chat990", { name: object.username, message: object.content });
-  } else if (poll == true) {
-    if (object.content == "1") {
+    if(poll == true){
       votesA++;
-      console.log("Votes for 1: " + votesA);
       windowManager.sharedData.set("votesA", { votes: votesA });
-    } else if (object.content == "2") {
+    }
+    else{
+      windowManager.sharedData.set("chat887", { name: object.username, message: object.content });
+    }    
+  } else if (object.channel == "b") {
+    if(poll == true){
       votesB++;
-      console.log("Votes for 2: " + votesA);
       windowManager.sharedData.set("votesB", { votes: votesB });
     }
-  }
+    else{
+      windowManager.sharedData.set("chat502", { name: object.username, message: object.content });
+    }
+  } else if (object.channel == "c") {
+    if(poll == true){
+      votesC++;
+      windowManager.sharedData.set("votesC", { votes: votesC });
+    }
+    else{
+      windowManager.sharedData.set("chat740", { name: object.username, message: object.content });
+    }
+  } else if (object.channel == "d") {
+    if(poll == true){
+      votesD++;
+      windowManager.sharedData.set("votesD", { votes: votesD });
+    }
+    else{
+      windowManager.sharedData.set("chat53", { name: object.username, message: object.content });
+    }
+  } else if (object.channel == "e") {
+    if(poll == true){
+      votesE++;
+      windowManager.sharedData.set("votesE", { votes: votesE });
+    }
+    else{
+      windowManager.sharedData.set("chat183", { name: object.username, message: object.content });
+    }
+  } else if (object.channel == "f") {
+    if(poll == true){
+      votesF++;
+      windowManager.sharedData.set("votesF", { votes: votesF });
+    }
+    else{
+      windowManager.sharedData.set("chat990", { name: object.username, message: object.content });
+    }
+  } 
+  // else if (poll == true) {
+  //   if (object.content == "1") {
+  //     votesA++;
+  //     console.log("Votes for 1: " + votesA);
+  //     windowManager.sharedData.set("votesA", { votes: votesA });
+  //   } else if (object.content == "2") {
+  //     votesB++;
+  //     console.log("Votes for 2: " + votesA);
+  //     windowManager.sharedData.set("votesB", { votes: votesB });
+  //   }
+  // }
 
   if (object.content == "!poll") {
     poll = true;
