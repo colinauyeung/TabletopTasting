@@ -337,6 +337,7 @@ document.addEventListener("keydown", (event) => {
     }
     // if
     if(event.code==="Digit5"){
+        emotestoggle = true;
         var chats = document.getElementsByClassName("chat");
         for(var i = 0; i<chats.length; i++){
             chats[i].style.visibility = "visible"
@@ -595,7 +596,7 @@ function writechat(chatid, newValue){
     // child.append(newValue.name + ": " + newValue.message)
     text.appendChild(child);
 
-    if (text.childNodes.length > 5) {
+    if (text.childNodes.length > 3) {
         text.removeChild(text.firstChild);
     }
 }
@@ -657,6 +658,8 @@ windowManager.sharedData.watch("chat887", function(prop, action, newValue, oldVa
         drawemotes("text887", newValue.message) 
     }
 
+    updatescrollchat(newValue.message)
+
     setweights(datab, newValue.message)
 
     writechat("chat887", newValue)
@@ -700,7 +703,7 @@ windowManager.sharedData.watch("chat53", function(prop, action, newValue, oldVal
         drawemotes("text53", newValue.message)
         
     }
-    updatescrollchat(newValue.message)
+    // updatescrollchat(newValue.message)
 
     setweights(datad, newValue.message)
 

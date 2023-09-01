@@ -118,7 +118,7 @@ app.whenReady().then(() => {
       username: 'icosah',
       password: process.env.OAUTH
     },
-    channels: localchannels
+    channels: []
   });
 
   client.connect();
