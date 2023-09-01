@@ -3,49 +3,49 @@ require('dotenv').config()
 const remote = require('electron').remote
 const windowManager = remote.require('electron-window-manager');
 const linkPreviewGenerator = require("link-preview-generator");
-const cloud = require("d3-cloud");
-const forceBoundary = require("d3-force-boundary");
+// const cloud = require("d3-cloud");
+// const forceBoundary = require("d3-force-boundary");
 
-const emotes = ['MechaRobot', 'ImTyping', 'Shush', 'MyAvatar', 
-'PizzaTime', 'LaundryBasket', 'ModLove', 'PotFriend', 'Jebasted', 
-'PogBones', 'PoroSad', 'KEKHeim', 'CaitlynS', 'HarleyWink', 'WhySoSerious', 
-'DarkKnight', 'FamilyMan', 'RyuChamp', 'HungryPaimon', 'TransgenderPride',
-'PansexualPride', 'NonbinaryPride', 'LesbianPride', 'IntersexPride', 'GenderFluidPride', 
-'GayPride', 'BisexualPride', 'AsexualPride', 'NewRecord', 'PogChamp', 'GlitchNRG', 
-'GlitchLit', 'StinkyGlitch', 'GlitchCat', 'FootGoal', 'FootYellow', 'FootBall', 
-'BlackLivesMatter', 'ExtraLife', 'VirtualHug', 'R-)', 'R)', ';-p', ';p', ';-P', 
-';P', ':-p', ':p', ':-P', ':P', ';-)', ';)', ':-1', ':1', ':-2', ':2', '<3', ':-o', 
-':o', ':-O', ':O', '8-)', 'B-)', 'B)', 'o.o', 'o_o', 'o.O', 'o_O', 'O.O', 'O_O', 
-'O.o', 'O_o', ':-Z', ':Z', ':-z', ':z', ':-|', ':|', '>(', ':-D', ':D', ':-(', 
-':(', ':-)', 'BOP', 'SingsNote', 'SingsMic', 'TwitchSings', 'SoonerLater', 'HolidayTree',
-'HolidaySanta', 'HolidayPresent', 'HolidayLog', 'HolidayCookie', 'GunRun', 'PixelBob', 
-'FBPenalty', 'FBChallenge', 'FBCatch', 'FBBlock', 'FBSpiral', 'FBPass', 'FBRun', 'MaxLOL',
-'TwitchRPG', 'PinkMercy', 'MercyWing2', 'MercyWing1', 'PartyHat', 'EarthDay', 'TombRaid',
-'PopCorn', 'FBtouchdown', 'TPFufun', 'TwitchVotes', 'DarkMode', 'HSWP', 'HSCheers',
-'PowerUpL', 'PowerUpR', 'LUL', 'EntropyWins', 'TPcrunchyroll', 'TwitchUnity', 'Squid4', 
-'Squid3', 'Squid2', 'Squid1', 'CrreamAwk', 'CarlSmile', 'TwitchLit', 'TehePelo',
-'TearGlove', 'SabaPing', 'PunOko', 'KonCha', 'Kappu', 'InuyoFace', 'BigPhish', 
-'BegWan', 'ThankEgg', 'MorphinTime', 'TheIlluminati', 'TBAngel', 'MVGame', 
-'NinjaGrumpy', 'PartyTime', 'RlyTho', 'UWot', 'YouDontSay', 'KAPOW', 'ItsBoshyTime', 
-'CoolStoryBob', 'TriHard', 'SuperVinlin', 'FreakinStinkin', 'Poooound', 'CurseLit', 
-'BatChest', 'BrainSlug', 'PrimeMe', 'StrawBeary', 'RaccAttack', 'UncleNox', 'WTRuck', 
-'TooSpicy', 'Jebaited', 'DogFace', 'BlargNaut', 'TakeNRG', 'GivePLZ', 'imGlitch', 
-'pastaThat', 'copyThis', 'UnSane', 'DatSheffy', 'TheTarFu', 'PicoMause', 'TinyFace', 'DxCat',
-'RuleFive', 'VoteNay', 'VoteYea', 'PJSugar', 'DoritosChip', 'OpieOP', 'FutureMan', 
-'ChefFrank', 'StinkyCheese', 'NomNom', 'SmoocherZ', 'cmonBruh', 'KappaWealth', 'MikeHogu',
-'VoHiYo', 'KomodoHype', 'SeriousSloth', 'OSFrog', 'OhMyDog', 'KappaClaus', 'KappaRoss',
-'MingLee', 'SeemsGood', 'twitchRaid', 'bleedPurple', 'duDudu', 'riPepperonis', 'NotLikeThis',
-'DendiFace', 'CoolCat', 'KappaPride', 'ShadyLulu', 'ArgieB8', 'CorgiDerp', 'PraiseIt',
-'TTours', 'mcaT', 'NotATK', 'HeyGuys', 'Mau5', 'PRChase', 'WutFace', 'BuddhaBar',
-'PermaSmug', 'panicBasket', 'BabyRage', 'HassaanChop', 'TheThing', 'EleGiggle',
-'RitzMitz', 'YouWHY', 'PipeHype', 'BrokeBack', 'ANELE', 'PanicVis', 'GrammarKing',
-'PeoplesChamp', 'SoBayed', 'BigBrother', 'Keepo', 'Kippa', 'RalpherZ', 'TF2John', 'ThunBeast',
-'WholeWheat', 'DAESuppy', 'FailFish', 'HotPokket', '4Head', 'ResidentSleeper', 'FUNgineer',
-'PMSTwin', 'ShazBotstix', 'BibleThump', 'AsianGlow', 'DBstyle', 'BloodTrail', 'OneHand',
-'FrankerZ', 'SMOrc', 'ArsonNoSexy', 'PunchTrees', 'SSSsss', 'Kreygasm', 'KevinTurtle',
-'PJSalt', 'SwiftRage', 'DansGame', 'GingerPower', 'BCWarrior', 'MrDestructoid',
-'JonCarnage', 'Kappa', 'RedCoat', 'TheRinger', 'StoneLightning', 'OptimizePrime', 'JKanStyle',
-'R)', ';P', ':P', ';)', ':2', '<3', ':O', 'B)', 'O_o', ':|', '>(', ':D', ':(', ':)']
+const emotes = ['MechaRobot', 'ImTyping', 'Shush', 'MyAvatar',
+    'PizzaTime', 'LaundryBasket', 'ModLove', 'PotFriend', 'Jebasted',
+    'PogBones', 'PoroSad', 'KEKHeim', 'CaitlynS', 'HarleyWink', 'WhySoSerious',
+    'DarkKnight', 'FamilyMan', 'RyuChamp', 'HungryPaimon', 'TransgenderPride',
+    'PansexualPride', 'NonbinaryPride', 'LesbianPride', 'IntersexPride', 'GenderFluidPride',
+    'GayPride', 'BisexualPride', 'AsexualPride', 'NewRecord', 'PogChamp', 'GlitchNRG',
+    'GlitchLit', 'StinkyGlitch', 'GlitchCat', 'FootGoal', 'FootYellow', 'FootBall',
+    'BlackLivesMatter', 'ExtraLife', 'VirtualHug', 'R-)', 'R)', ';-p', ';p', ';-P',
+    ';P', ':-p', ':p', ':-P', ':P', ';-)', ';)', ':-1', ':1', ':-2', ':2', '<3', ':-o',
+    ':o', ':-O', ':O', '8-)', 'B-)', 'B)', 'o.o', 'o_o', 'o.O', 'o_O', 'O.O', 'O_O',
+    'O.o', 'O_o', ':-Z', ':Z', ':-z', ':z', ':-|', ':|', '>(', ':-D', ':D', ':-(',
+    ':(', ':-)', 'BOP', 'SingsNote', 'SingsMic', 'TwitchSings', 'SoonerLater', 'HolidayTree',
+    'HolidaySanta', 'HolidayPresent', 'HolidayLog', 'HolidayCookie', 'GunRun', 'PixelBob',
+    'FBPenalty', 'FBChallenge', 'FBCatch', 'FBBlock', 'FBSpiral', 'FBPass', 'FBRun', 'MaxLOL',
+    'TwitchRPG', 'PinkMercy', 'MercyWing2', 'MercyWing1', 'PartyHat', 'EarthDay', 'TombRaid',
+    'PopCorn', 'FBtouchdown', 'TPFufun', 'TwitchVotes', 'DarkMode', 'HSWP', 'HSCheers',
+    'PowerUpL', 'PowerUpR', 'LUL', 'EntropyWins', 'TPcrunchyroll', 'TwitchUnity', 'Squid4',
+    'Squid3', 'Squid2', 'Squid1', 'CrreamAwk', 'CarlSmile', 'TwitchLit', 'TehePelo',
+    'TearGlove', 'SabaPing', 'PunOko', 'KonCha', 'Kappu', 'InuyoFace', 'BigPhish',
+    'BegWan', 'ThankEgg', 'MorphinTime', 'TheIlluminati', 'TBAngel', 'MVGame',
+    'NinjaGrumpy', 'PartyTime', 'RlyTho', 'UWot', 'YouDontSay', 'KAPOW', 'ItsBoshyTime',
+    'CoolStoryBob', 'TriHard', 'SuperVinlin', 'FreakinStinkin', 'Poooound', 'CurseLit',
+    'BatChest', 'BrainSlug', 'PrimeMe', 'StrawBeary', 'RaccAttack', 'UncleNox', 'WTRuck',
+    'TooSpicy', 'Jebaited', 'DogFace', 'BlargNaut', 'TakeNRG', 'GivePLZ', 'imGlitch',
+    'pastaThat', 'copyThis', 'UnSane', 'DatSheffy', 'TheTarFu', 'PicoMause', 'TinyFace', 'DxCat',
+    'RuleFive', 'VoteNay', 'VoteYea', 'PJSugar', 'DoritosChip', 'OpieOP', 'FutureMan',
+    'ChefFrank', 'StinkyCheese', 'NomNom', 'SmoocherZ', 'cmonBruh', 'KappaWealth', 'MikeHogu',
+    'VoHiYo', 'KomodoHype', 'SeriousSloth', 'OSFrog', 'OhMyDog', 'KappaClaus', 'KappaRoss',
+    'MingLee', 'SeemsGood', 'twitchRaid', 'bleedPurple', 'duDudu', 'riPepperonis', 'NotLikeThis',
+    'DendiFace', 'CoolCat', 'KappaPride', 'ShadyLulu', 'ArgieB8', 'CorgiDerp', 'PraiseIt',
+    'TTours', 'mcaT', 'NotATK', 'HeyGuys', 'Mau5', 'PRChase', 'WutFace', 'BuddhaBar',
+    'PermaSmug', 'panicBasket', 'BabyRage', 'HassaanChop', 'TheThing', 'EleGiggle',
+    'RitzMitz', 'YouWHY', 'PipeHype', 'BrokeBack', 'ANELE', 'PanicVis', 'GrammarKing',
+    'PeoplesChamp', 'SoBayed', 'BigBrother', 'Keepo', 'Kippa', 'RalpherZ', 'TF2John', 'ThunBeast',
+    'WholeWheat', 'DAESuppy', 'FailFish', 'HotPokket', '4Head', 'ResidentSleeper', 'FUNgineer',
+    'PMSTwin', 'ShazBotstix', 'BibleThump', 'AsianGlow', 'DBstyle', 'BloodTrail', 'OneHand',
+    'FrankerZ', 'SMOrc', 'ArsonNoSexy', 'PunchTrees', 'SSSsss', 'Kreygasm', 'KevinTurtle',
+    'PJSalt', 'SwiftRage', 'DansGame', 'GingerPower', 'BCWarrior', 'MrDestructoid',
+    'JonCarnage', 'Kappa', 'RedCoat', 'TheRinger', 'StoneLightning', 'OptimizePrime', 'JKanStyle',
+    'R)', ';P', ':P', ';)', ':2', '<3', ':O', 'B)', 'O_o', ':|', '>(', ':D', ':(', ':)']
 
 var height = 700;
 var width = 1250;
@@ -104,18 +104,18 @@ var cloudtoggle = true;
 // simulation.force("link")
 // .links(datadots.links);
 
-function decay(){
-datadots.links.forEach(i=>{
-    if(i.strength!==0){
-    i.strength = i.strength*0.99;
-    }
-})
-simulation.force("link")
-.links(datadots.links);
+function decay() {
+    datadots.links.forEach(i => {
+        if (i.strength !== 0) {
+            i.strength = i.strength * 0.99;
+        }
+    })
+    simulation.force("link")
+        .links(datadots.links);
 }
 
 let checked = false;
-function update(name,val,cup){
+function update(name, val, cup) {
     // checked = false;
     // datadots.links.forEach(e=>{
     //     if(e.target.id === name){
@@ -147,7 +147,7 @@ function update(name,val,cup){
     //     .nodes(datadots.nodes)
     //     .on("tick", ticked)
     //     .alphaDecay(0);
-    
+
 
     //     simulation.force("link")
     //     .links(datadots.links);
@@ -208,7 +208,7 @@ function update(name,val,cup){
 
     // svgdots.selectAll("circle").remove()
     // svgdots.selectAll("line").remove()
-    
+
     // node = nodecontainer
     // .data(datadots.nodes, d=>{return d.id})
     // .enter().append("circle")
@@ -237,7 +237,7 @@ function update(name,val,cup){
     // .links(datadots.links);
 }
 
-    
+
 // function ticked() {
 // link
 // .attr("x1", function(d) { return d.source.x; })
@@ -248,7 +248,7 @@ function update(name,val,cup){
 // .attr("cx", function(d) { return d.x; })
 // .attr("cy", function(d) { return d.y; });
 // }    
-    
+
 // // Reheat the simulation when drag starts, and fix the subject position.
 // function dragstarted(event) {
 // if (!event.active) simulation.alphaTarget(0.3).restart();
@@ -272,34 +272,34 @@ function update(name,val,cup){
 
 // let timer = setInterval(decay, 500);
 
-const colorsdots = ["Blue", "BlueViolet", "Coral", "Chartreuse", "DarkGreen", 
-"DarkGoldenRod", "Crimson","Orange", "Gold", "PowderBlue", "Peru", "Pink", "Plum",
-"SlateGray", "Teal", "LightGreen", "Maroon"]
+const colorsdots = ["Blue", "BlueViolet", "Coral", "Chartreuse", "DarkGreen",
+    "DarkGoldenRod", "Crimson", "Orange", "Gold", "PowderBlue", "Peru", "Pink", "Plum",
+    "SlateGray", "Teal", "LightGreen", "Maroon"]
 
-function randomcolor(){
+function randomcolor() {
     var index = Math.ceil(Math.random() * colorsdots.length)
     return colorsdots[index]
 }
 
-function hide(){
+function hide() {
     var clouds = document.getElementsByClassName("cloud");
-    for(var i = 0; i<clouds.length; i++){
+    for (var i = 0; i < clouds.length; i++) {
         clouds[i].style.visibility = "hidden"
     }
     var scrallchat = document.getElementsByClassName("scrollchat");
-    for(var i = 0; i<scrallchat.length; i++){
+    for (var i = 0; i < scrallchat.length; i++) {
         scrallchat[i].style.visibility = "hidden"
     }
     var bars = document.getElementsByClassName("bars");
-    for(var i = 0; i<bars.length; i++){
+    for (var i = 0; i < bars.length; i++) {
         bars[i].style.visibility = "hidden"
     }
     var chats = document.getElementsByClassName("chat");
-    for(var i = 0; i<chats.length; i++){
+    for (var i = 0; i < chats.length; i++) {
         chats[i].style.visibility = "hidden"
     }
     var notes = document.getElementsByClassName("notes");
-    for(var i = 0; i<notes.length; i++){
+    for (var i = 0; i < notes.length; i++) {
         notes[i].style.visibility = "hidden"
     }
     emotestoggle = false;
@@ -312,47 +312,47 @@ document.addEventListener("keydown", (event) => {
     // if (event.isComposing || event.keyCode === 229) {
     //   return;
     // }
-    if(!event.ctrlKey){
+    if (!event.ctrlKey) {
         return;
     }
-    if(event.code==="ControlLeft"){
+    if (event.code === "ControlLeft") {
         return;
     }
     hide()
-    if(event.code === "Digit1"){
+    if (event.code === "Digit1") {
         cloudtoggle = true;
         var clouds = document.getElementsByClassName("cloud");
-        for(var i = 0; i<clouds.length; i++){
+        for (var i = 0; i < clouds.length; i++) {
             clouds[i].style.visibility = "visible"
         }
     }
-    if(event.code === "Digit2"){
+    if (event.code === "Digit2") {
         emotestoggle = true;
     }
-    if(event.code === "Digit3"){
+    if (event.code === "Digit3") {
         chatbackgroundtoggle = true;
     }
-    if(event.code==="Digit4"){
+    if (event.code === "Digit4") {
         document.getElementById("dots").style.visibility = "visible";
     }
     // if
-    if(event.code==="Digit5"){
+    if (event.code === "Digit5") {
         var chats = document.getElementsByClassName("chat");
-        for(var i = 0; i<chats.length; i++){
+        for (var i = 0; i < chats.length; i++) {
             chats[i].style.visibility = "visible"
         }
     }
 
-    if(event.code==="Digit6"){
+    if (event.code === "Digit6") {
         var notes = document.getElementsByClassName("notes");
-        for(var i = 0; i<notes.length; i++){
+        for (var i = 0; i < notes.length; i++) {
             notes[i].style.visibility = "visible"
         }
     }
 
-    if(event.code==="Digit7"){
+    if (event.code === "Digit7") {
         var bars = document.getElementsByClassName("bars");
-        for(var i = 0; i<bars.length; i++){
+        for (var i = 0; i < bars.length; i++) {
             bars[i].style.visibility = "visible"
         }
     }
@@ -364,14 +364,14 @@ document.addEventListener("keydown", (event) => {
 //https://observablehq.com/@d3/word-cloud
 const stopwords = new Set("i,me,my,myself,we,us,our,ours,ourselves,you,your,yours,yourself,yourselves,he,him,his,himself,she,her,hers,herself,it,its,itself,they,them,their,theirs,themselves,what,which,who,whom,whose,this,that,these,those,am,is,are,was,were,be,been,being,have,has,had,having,do,does,did,doing,will,would,should,can,could,ought,i'm,you're,he's,she's,it's,we're,they're,i've,you've,we've,they've,i'd,you'd,he'd,she'd,we'd,they'd,i'll,you'll,he'll,she'll,we'll,they'll,isn't,aren't,wasn't,weren't,hasn't,haven't,hadn't,doesn't,don't,didn't,won't,wouldn't,shan't,shouldn't,can't,cannot,couldn't,mustn't,let's,that's,who's,what's,here's,there's,when's,where's,why's,how's,a,an,the,and,but,if,or,because,as,until,while,of,at,by,for,with,about,against,between,into,through,during,before,after,above,below,to,from,up,upon,down,in,out,on,off,over,under,again,further,then,once,here,there,when,where,why,how,all,any,both,each,few,more,most,other,some,such,no,nor,not,only,own,same,so,than,too,very,say,says,said,shall".split(","))
 
-function seperate(word){
+function seperate(word) {
     return words = word.split(/[\s.]+/g)
-    .map(w => w.replace(/^[“‘"\-—()\[\]{}]+/g, ""))
-    .map(w => w.replace(/[;:.!?()\[\]{},"'’”\-—]+$/g, ""))
-    .map(w => w.replace(/['’]s$/g, ""))
-    .map(w => w.substring(0, 30))
-    .map(w => w.toLowerCase())
-    .filter(w => w && !stopwords.has(w))
+        .map(w => w.replace(/^[“‘"\-—()\[\]{}]+/g, ""))
+        .map(w => w.replace(/[;:.!?()\[\]{},"'’”\-—]+$/g, ""))
+        .map(w => w.replace(/['’]s$/g, ""))
+        .map(w => w.substring(0, 30))
+        .map(w => w.toLowerCase())
+        .filter(w => w && !stopwords.has(w))
 }
 
 //https://stackoverflow.com/questions/26881137/create-dynamic-word-cloud-using-d3-js
@@ -385,9 +385,9 @@ var datad = [];
 var datae = [];
 var dataf = [];
 
-function calcsize(weight, ltotal){
+function calcsize(weight, ltotal) {
     // console.log((42 * (weight/total)) + 8)
-    return ((10 * (weight/ltotal))*4) + 20
+    return ((10 * (weight / ltotal)) * 4) + 20
 }
 
 // function updatecloud(lcdata, cloudid){
@@ -417,7 +417,7 @@ function calcsize(weight, ltotal){
 //       .start();
 
 //     function draw(words) {
-    
+
 //       console.log(words)
 //       document.getElementById(cloudid).innerHTML = "";
 //       d3.select("#"+ cloudid)
@@ -487,7 +487,7 @@ function calcsize(weight, ltotal){
 function fade(element) {
     var op = 1;  // initial opacity
     var timer = setInterval(function () {
-        if (op <= 0.1){
+        if (op <= 0.1) {
             clearInterval(timer);
             element.style.display = 'none';
         }
@@ -504,9 +504,9 @@ function setTranslate(xPos, yPos, el) {
     el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
 }
 
-function updatetracking(newValue, cupname, cupid ){
-    let svgx = ((newValue.refx - 625) * 1.50)+625;
-    let svgy = ((newValue.refy-350)*1.5)+350;
+function updatetracking(newValue, cupname, cupid) {
+    let svgx = ((newValue.refx - 625) * 1.50) + 625;
+    let svgy = ((newValue.refy - 350) * 1.5) + 350;
     var cup = document.getElementById(cupid)
     let x = svgx;
     let y = svgy;
@@ -518,8 +518,8 @@ function updatetracking(newValue, cupname, cupid ){
 
     // let svgx = ((newValue.refx - 625) * 1.50)+625;
     // let svgy = ((newValue.refy-350)*1.5)+350;
-    node.each(d=>{
-        if(d.id === cupname){
+    node.each(d => {
+        if (d.id === cupname) {
             d.fx = svgx;
             d.fy = svgy;
         }
@@ -528,58 +528,58 @@ function updatetracking(newValue, cupname, cupid ){
 }
 
 var timestamp = 0;
-windowManager.sharedData.watch("cup887", function(prop, action, newValue, oldValue){
+windowManager.sharedData.watch("cup887", function (prop, action, newValue, oldValue) {
     updatetracking(newValue, "cup1", "cup887")
 })
 
 var timestamp2 = 0;
-windowManager.sharedData.watch("cup502", function(prop, action, newValue, oldValue){
+windowManager.sharedData.watch("cup502", function (prop, action, newValue, oldValue) {
     updatetracking(newValue, "cup2", "cup502")
 })
 
-windowManager.sharedData.watch("cup740", function(prop, action, newValue, oldValue){
+windowManager.sharedData.watch("cup740", function (prop, action, newValue, oldValue) {
     updatetracking(newValue, "cup3", "cup740")
 })
 
-windowManager.sharedData.watch("cup53", function(prop, action, newValue, oldValue){
+windowManager.sharedData.watch("cup53", function (prop, action, newValue, oldValue) {
     updatetracking(newValue, "cup4", "cup53")
 })
 
-windowManager.sharedData.watch("cup183", function(prop, action, newValue, oldValue){
+windowManager.sharedData.watch("cup183", function (prop, action, newValue, oldValue) {
     updatetracking(newValue, "cup5", "cup183")
 })
 
-windowManager.sharedData.watch("cup990", function(prop, action, newValue, oldValue){
+windowManager.sharedData.watch("cup990", function (prop, action, newValue, oldValue) {
     updatetracking(newValue, "cup6", "cup990")
 })
 
-function setweights(data, message){
+function setweights(data, message) {
     var localwords = seperate(message);
 
-    localwords.forEach(d=>{
+    localwords.forEach(d => {
         var found = false;
-        data.forEach(e=>{
-            if(d===e.word){
-                e.count = e.count +1;
-                e.weight=calcsize(e.count)
+        data.forEach(e => {
+            if (d === e.word) {
+                e.count = e.count + 1;
+                e.weight = calcsize(e.count)
                 found = true;
             }
-        })  
-        if(!found){
-            data.push({word:d, count:1, weight:calcsize(1)});
-        }  
+        })
+        if (!found) {
+            data.push({ word: d, count: 1, weight: calcsize(1) });
+        }
 
-        data.forEach(e=>{
+        data.forEach(e => {
             // if(d===e.word){
-                // e.count = e.count +1;
-            e.weight=calcsize(e.count);
-                // found = true;
+            // e.count = e.count +1;
+            e.weight = calcsize(e.count);
+            // found = true;
             // }
-        })  
+        })
     })
 }
 
-function writechat(chatid, newValue){
+function writechat(chatid, newValue) {
     let text = document.getElementById(chatid)
     // text.append(newValue.name + ": " + newValue.message)
     const child = document.createElement('p');
@@ -600,19 +600,19 @@ function writechat(chatid, newValue){
     }
 }
 
-function drawemotes(textid, message){
-    if(emotestoggle === true){
+function drawemotes(textid, message) {
+    if (emotestoggle === true) {
         let cup = document.getElementById(textid)
         // cup.appendChild(el);
         let div1 = document.createElement("div");
-        var time = 4000+(Math.random()*3000);
-        div1.style.animation = "up "+time+"ms 233ms infinite"
+        var time = 4000 + (Math.random() * 3000);
+        div1.style.animation = "up " + time + "ms 233ms infinite"
         div1.style.position = "absolute"
-        var side = -25 + (Math.random()*50);
-        div1.style.transform ="translateX("+side+"%)"
+        var side = -25 + (Math.random() * 50);
+        div1.style.transform = "translateX(" + side + "%)"
         let div2 = document.createElement("div");
-        var time2 = 2500+(Math.random()*1000);
-        div2.style.animation = "wobble"+1+" "+time2+"ms 275ms infinite ease-in-out";
+        var time2 = 2500 + (Math.random() * 1000);
+        div2.style.animation = "wobble" + 1 + " " + time2 + "ms 275ms infinite ease-in-out";
         let img = document.createElement("img");
         img.src = `../twitchemotes/${message}.jpg`;
         img.style.width = "50%"
@@ -620,29 +620,29 @@ function drawemotes(textid, message){
         cup.appendChild(div1);
         div1.appendChild(div2);
         div2.appendChild(img);
-        var timer = setTimeout(function(){
+        var timer = setTimeout(function () {
             div1.remove();
         }, time)
     }
 }
 
-function updatescrollchat(message){
-    if(chatbackgroundtoggle===true){
+function updatescrollchat(message) {
+    if (chatbackgroundtoggle === true) {
         let mainbox = document.getElementById("mainbox");
         let textbox = document.createElement("div");
         textbox.className = "scrollchat";
         textbox.innerHTML = message;
         var percent = 100;
-        textbox.style.left = percent+"%";
-        var height = 10+(Math.random()*80)
-        textbox.style.top = height+"%"
-        var size = 14+Math.ceil(Math.random()*16)
-        textbox.style.fontSize = size+"px";
-        var ran = Math.floor(Math.random()*4.9)
+        textbox.style.left = percent + "%";
+        var height = 10 + (Math.random() * 80)
+        textbox.style.top = height + "%"
+        var size = 14 + Math.ceil(Math.random() * 16)
+        textbox.style.fontSize = size + "px";
+        var ran = Math.floor(Math.random() * 4.9)
         textbox.style.color = palette[ran]
-        var timer = setInterval(function(){
+        var timer = setInterval(function () {
             percent = percent - 0.1;
-            textbox.style.left = percent+"%";
+            textbox.style.left = percent + "%";
         }, 20)
         mainbox.appendChild(textbox);
     }
@@ -650,11 +650,11 @@ function updatescrollchat(message){
 
 var palette = ["#F5C1C1", "#FFFAB0", "#CBF2B8", "#DFC5E8", "#BAEEE5"]
 
-windowManager.sharedData.watch("chat887", function(prop, action, newValue, oldValue){
+windowManager.sharedData.watch("chat887", function (prop, action, newValue, oldValue) {
     console.log(newValue)
     update(newValue.name, 1, 0);
-    if(emotes.includes(newValue.message)){
-        drawemotes("text887", newValue.message) 
+    if (emotes.includes(newValue.message)) {
+        drawemotes("text887", newValue.message)
     }
 
     updatescrollchat(newValue.message)
@@ -665,12 +665,12 @@ windowManager.sharedData.watch("chat887", function(prop, action, newValue, oldVa
 
 })
 
-windowManager.sharedData.watch("chat502", function(prop, action, newValue, oldValue){
+windowManager.sharedData.watch("chat502", function (prop, action, newValue, oldValue) {
     update(newValue.name, 1, 1);
     console.log(newValue)
-    if(emotes.includes(newValue.message)){
+    if (emotes.includes(newValue.message)) {
         drawemotes("text502", newValue.message)
-        
+
     }
     // updatescrollchat(newValue.message)
 
@@ -680,12 +680,12 @@ windowManager.sharedData.watch("chat502", function(prop, action, newValue, oldVa
 
 })
 
-windowManager.sharedData.watch("chat740", function(prop, action, newValue, oldValue){
+windowManager.sharedData.watch("chat740", function (prop, action, newValue, oldValue) {
     update(newValue.name, 1, 2);
     console.log(newValue)
-    if(emotes.includes(newValue.message)){
+    if (emotes.includes(newValue.message)) {
         drawemotes("text740", newValue.message)
-        
+
     }
     // updatescrollchat(newValue.message)
 
@@ -695,12 +695,12 @@ windowManager.sharedData.watch("chat740", function(prop, action, newValue, oldVa
 
 })
 
-windowManager.sharedData.watch("chat53", function(prop, action, newValue, oldValue){
+windowManager.sharedData.watch("chat53", function (prop, action, newValue, oldValue) {
     update(newValue.name, 1, 3);
     console.log(newValue)
-    if(emotes.includes(newValue.message)){
+    if (emotes.includes(newValue.message)) {
         drawemotes("text53", newValue.message)
-        
+
     }
     // updatescrollchat(newValue.message)
 
@@ -710,12 +710,12 @@ windowManager.sharedData.watch("chat53", function(prop, action, newValue, oldVal
 
 })
 
-windowManager.sharedData.watch("chat183", function(prop, action, newValue, oldValue){
+windowManager.sharedData.watch("chat183", function (prop, action, newValue, oldValue) {
     update(newValue.name, 1, 4);
     console.log(newValue)
-    if(emotes.includes(newValue.message)){
+    if (emotes.includes(newValue.message)) {
         drawemotes("text183", newValue.message)
-        
+
     }
     // updatescrollchat(newValue.message)
 
@@ -725,12 +725,12 @@ windowManager.sharedData.watch("chat183", function(prop, action, newValue, oldVa
 
 })
 
-windowManager.sharedData.watch("chat990", function(prop, action, newValue, oldValue){
+windowManager.sharedData.watch("chat990", function (prop, action, newValue, oldValue) {
     update(newValue.name, 1, 5);
     console.log(newValue)
-    if(emotes.includes(newValue.message)){
+    if (emotes.includes(newValue.message)) {
         drawemotes("text990", newValue.message)
-        
+
     }
     // updatescrollchat(newValue.message)
 
