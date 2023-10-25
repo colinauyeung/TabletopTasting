@@ -7,7 +7,7 @@ votesF = [0];
 
 width = 500;
 height = 70;
-total = 0
+total = 1
 
 const margin = { top: 50, bottom: 50, left: 50, right: 50 }
 var format = d3.format(".0%")

@@ -657,6 +657,10 @@ windowManager.sharedData.watch("chat887", function (prop, action, newValue, oldV
         drawemotes("text887", newValue.message)
     }
 
+
+    localemotes = ["KonCha", "SabaPing", "PunOko", "PoroSad", "HungryPaimon"]
+    drawemotes("text887", localemotes[Math.floor(Math.random()*localemotes.length)])
+    
     updatescrollchat(newValue.message)
 
     setweights(datab, newValue.message)
@@ -668,10 +672,14 @@ windowManager.sharedData.watch("chat887", function (prop, action, newValue, oldV
 windowManager.sharedData.watch("chat502", function (prop, action, newValue, oldValue) {
     update(newValue.name, 1, 1);
     console.log(newValue)
+
     if (emotes.includes(newValue.message)) {
         drawemotes("text502", newValue.message)
 
     }
+
+    localemotes = ["BibleThump", "PogChamp", "PeoplesChamp", "NotLikeThis", "Jebasted"]
+    drawemotes("text502", localemotes[Math.floor(Math.random()*localemotes.length)])
     // updatescrollchat(newValue.message)
 
     setweights(data, newValue.message)
